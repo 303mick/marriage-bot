@@ -1,0 +1,1875 @@
+<title>Validata</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Manrope:wght@400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg:#0B1220;
+    --bg-raise:#0E1626;
+    --surface:#121B2E;
+    --surface-2:#17233A;
+    --surface-3:#1D2A45;
+    --border:#243051;
+    --border-soft:#1A2440;
+    --text:#E9EEF9;
+    --text-dim:#95A2BE;
+    --text-faint:#5E6C8C;
+    --accent-a:#3B7CFF;
+    --accent-b:#6EC1FF;
+    --accent-a-dim:#3B7CFF33;
+    --accent-b-dim:#6EC1FF33;
+    --on-accent:#F5F8FF;
+    --good:#34D399;
+    --good-dim:#34D39926;
+    --scan-a:#22D97A;
+    --scan-b:#7CF7B0;
+    --scan-dim:#22D97A33;
+    --warn:#FBBF24;
+    --warn-dim:#FBBF2426;
+    --bad:#FB7185;
+    --bad-dim:#FB718526;
+    --shadow-lg:0 24px 60px -20px rgba(3,7,18,.65);
+    --shadow-sm:0 8px 20px -12px rgba(3,7,18,.5);
+    --radius-card:14px;
+    --radius-pill:999px;
+    --font-display:'Fraunces', ui-serif, Georgia, serif;
+    --font-body:'Manrope', system-ui, -apple-system, sans-serif;
+    --font-mono:'IBM Plex Mono', ui-monospace, monospace;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    padding:0 20px;
+  }
+  h1,h2,h3,h4{font-family:var(--font-display); text-wrap:balance; margin:0; line-height:1.1;}
+  p{margin:0; color:var(--text-dim); line-height:1.6;}
+  a{color:inherit;}
+  button{font-family:inherit;}
+  .num{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+  ::selection{background:var(--accent-a-dim); color:var(--text);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  /* ---------- shell ---------- */
+  .shell{max-width:1180px; margin:0 auto;}
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 0; margin-bottom:0;
+    background:linear-gradient(var(--bg) 78%, transparent);
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:1.35rem; font-weight:600; letter-spacing:.2px;}
+  .brand-mark{
+    width:30px; height:30px; border-radius:9px; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--accent-a),var(--accent-b));
+    box-shadow:0 6px 18px -6px var(--accent-b-dim);
+  }
+  .brand-mark svg{width:16px; height:16px;}
+  .nav-links{display:flex; align-items:center; gap:28px;}
+  .nav-links a{font-size:.9rem; color:var(--text-dim); text-decoration:none; transition:color .15s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-toggle{
+    display:flex; padding:4px; gap:2px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-pill);
+  }
+  .nav-toggle button{
+    border:none; background:transparent; color:var(--text-dim); font-size:.85rem; font-weight:600;
+    padding:8px 16px; border-radius:var(--radius-pill); cursor:pointer; transition:.18s;
+  }
+  .nav-toggle button.active{background:linear-gradient(135deg,var(--accent-a),var(--accent-b)); color:var(--on-accent);}
+  .btn{
+    border:none; cursor:pointer; font-weight:700; font-size:.88rem; border-radius:10px; padding:11px 20px;
+    display:inline-flex; align-items:center; gap:8px; transition:transform .15s, box-shadow .15s, background .15s;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--accent-a),var(--accent-b)); color:var(--on-accent); box-shadow:var(--shadow-sm);}
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 14px 30px -14px var(--accent-b-dim);}
+  .btn-ghost{background:var(--surface-2); color:var(--text); border:1px solid var(--border);}
+  .btn-ghost:hover{background:var(--surface-3);}
+  .btn:disabled{opacity:.55; cursor:not-allowed; transform:none;}
+  .btn-sm{padding:8px 14px; font-size:.78rem;}
+  [hidden]{display:none !important;}
+
+  section{padding:88px 0;}
+  .eyebrow{
+    font-family:var(--font-mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent-a); display:flex; align-items:center; gap:8px; margin-bottom:14px;
+  }
+  .eyebrow::before{content:''; width:16px; height:1px; background:var(--accent-a);}
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:56px; padding-bottom:70px;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:start;}
+  .hero h1{font-size:clamp(2.2rem,4vw,3.4rem); font-weight:600; margin-bottom:20px;}
+  .hero h1 em{font-style:normal; background:linear-gradient(135deg,var(--accent-a),var(--accent-b)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .hero-sub{font-size:1.08rem; max-width:46ch; margin-bottom:32px;}
+  .hero-form{display:flex; gap:10px; margin-bottom:14px;}
+  .hero-form input{
+    flex:1; background:var(--surface); border:1px solid var(--border); color:var(--text);
+    padding:14px 16px; border-radius:10px; font-size:.95rem; font-family:inherit;
+  }
+  .hero-form input:focus{outline:none; border-color:var(--accent-b);}
+  .hero-hint{font-size:.8rem; color:var(--text-faint);}
+  .hero-hint button{background:none; border:none; color:var(--accent-b); cursor:pointer; font-size:.8rem; padding:0; text-decoration:underline; text-underline-offset:3px;}
+  .trust-row{display:flex; gap:26px; margin-top:38px; flex-wrap:wrap;}
+  .trust-row .stat b{display:block; font-family:var(--font-mono); font-size:1.3rem;}
+  .trust-row .stat span{font-size:.76rem; color:var(--text-faint);}
+
+  /* verdict card */
+  .verdict-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:26px;
+    box-shadow:var(--shadow-lg); position:relative; overflow:hidden;
+  }
+  .verdict-card::before{
+    content:''; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background:radial-gradient(420px 220px at 100% -10%, var(--accent-b-dim), transparent 70%);
+  }
+  .verdict-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; position:relative;}
+  .verdict-top .label{font-family:var(--font-mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint);}
+  .verdict-idea{font-size:.98rem; color:var(--text); font-weight:600; margin-top:4px; max-width:70%;}
+  .verdict-score{text-align:right;}
+  .verdict-score .big{font-family:var(--font-display); font-size:2.6rem; font-weight:600; line-height:1;}
+  .verdict-score .of10{font-size:1rem; color:var(--text-faint); font-weight:400;}
+  .verdict-pill{
+    display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:var(--radius-pill);
+    font-size:.74rem; font-weight:700; margin-top:8px;
+  }
+  .dot{width:6px; height:6px; border-radius:50%; background:currentColor;}
+
+  .pillar-row{display:flex; flex-direction:column; gap:12px; margin:20px 0; position:relative;}
+  .pillar-line{display:grid; grid-template-columns:100px 1fr 34px; align-items:center; gap:10px; font-size:.78rem;}
+  .pillar-line .pname{color:var(--text-dim); display:flex; align-items:center; gap:7px;}
+  .pillar-line .pname svg{width:13px; height:13px; opacity:.8;}
+  .pillar-track{height:7px; border-radius:4px; background:var(--surface-3); overflow:hidden;}
+  .pillar-fill{height:100%; border-radius:4px; width:0%; transition:width 1s cubic-bezier(.16,1,.3,1); background:linear-gradient(90deg,var(--accent-a),var(--accent-b));}
+  .pillar-line .pval{font-family:var(--font-mono); text-align:right; color:var(--text);}
+
+  .pr-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:20px; position:relative;}
+  .pr-col h4{font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-faint); font-family:var(--font-body); font-weight:700; margin-bottom:8px;}
+  .pr-col ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px;}
+  .pr-col li{font-size:.8rem; color:var(--text-dim); display:flex; gap:7px; line-height:1.4;}
+  .pr-col li::before{flex:none; margin-top:5px; width:5px; height:5px; border-radius:50%; content:'';}
+  .pr-col.pros li::before{background:var(--good);}
+  .pr-col.risks li::before{background:var(--bad);}
+
+  .source-row{display:flex; gap:8px; margin-top:20px; flex-wrap:wrap; position:relative;}
+  .source-chip{
+    display:flex; align-items:center; gap:6px; background:var(--surface-2); border:1px solid var(--border-soft);
+    padding:6px 11px; border-radius:var(--radius-pill); font-size:.72rem; color:var(--text-dim);
+  }
+  .source-chip b{color:var(--text); font-family:var(--font-mono);}
+
+  /* ---------- boost idea ---------- */
+  .boost-prompt{
+    margin-top:18px; padding:13px 16px; border:1px dashed var(--warn); border-radius:12px; background:var(--warn-dim);
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .boost-prompt span{font-size:.82rem; color:var(--text); font-weight:600;}
+  .boost-panel{margin-top:16px; padding:18px; border-radius:12px; background:var(--surface-2); border:1px solid var(--border-soft);}
+  .boost-header{display:flex; align-items:center; gap:9px; margin-bottom:10px; flex-wrap:wrap;}
+  .boost-header b{font-size:.9rem;}
+  .boost-tag{
+    font-family:var(--font-mono); font-size:.64rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--good); background:var(--good-dim); padding:3px 9px; border-radius:var(--radius-pill);
+  }
+  .boost-panel p{font-size:.85rem; color:var(--text-dim);}
+  .boost-compare{display:flex; align-items:center; gap:14px; margin-top:16px;}
+  .boost-score{text-align:center;}
+  .boost-score .num{font-family:var(--font-display); font-size:1.6rem; font-weight:600;}
+  .boost-score .lbl{font-size:.66rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:.05em; margin-top:2px;}
+  .boost-arrow{color:var(--text-faint); font-size:1.2rem;}
+
+  /* ---------- scan fx: shared x-ray scanning visual ---------- */
+  .verdict-body{transition:filter .35s ease, opacity .35s ease;}
+  .verdict-body.scanning{filter:blur(3px) saturate(.6); opacity:.32;}
+
+  .scan-fx{position:absolute; inset:0; z-index:5; pointer-events:none; opacity:0; transition:opacity .22s ease;}
+  .scan-fx.active{opacity:1;}
+  .scan-fx.fade-out{opacity:0;}
+
+  .scan-fx .sf-grid{
+    position:absolute; inset:0; opacity:0;
+    background-image:
+      repeating-linear-gradient(0deg, var(--scan-dim) 0 1px, transparent 1px 24px),
+      repeating-linear-gradient(90deg, var(--scan-dim) 0 1px, transparent 1px 24px);
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            mask-image:linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  }
+  .scan-fx.active .sf-grid{animation:sfGridIn .2s ease forwards;}
+
+  .scan-fx .sf-beam{
+    position:absolute; left:0; right:0; top:-8%; height:2px;
+    background:linear-gradient(90deg, transparent, var(--scan-a), var(--scan-b), transparent);
+    box-shadow:0 0 14px 2px var(--scan-b), 0 0 34px 9px var(--scan-dim);
+  }
+  .scan-fx.active .sf-beam{animation:sfSweep var(--scan-dur,1.1s) cubic-bezier(.65,0,.35,1) forwards;}
+
+  .scan-fx .sf-corner{position:absolute; width:14px; height:14px; border:2px solid var(--scan-a); opacity:.8;}
+  .scan-fx .sf-corner.tl{top:7px; left:7px; border-right:none; border-bottom:none;}
+  .scan-fx .sf-corner.tr{top:7px; right:7px; border-left:none; border-bottom:none;}
+  .scan-fx .sf-corner.bl{bottom:7px; left:7px; border-right:none; border-top:none;}
+  .scan-fx .sf-corner.br{bottom:7px; right:7px; border-left:none; border-top:none;}
+
+  .scan-fx .sf-label{
+    position:absolute; top:8px; left:50%; transform:translate(-50%,-4px);
+    font-family:var(--font-mono); font-size:.64rem; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--scan-a); background:var(--bg-raise); padding:3px 10px; border:1px solid var(--border);
+    border-radius:var(--radius-pill); opacity:0; white-space:nowrap;
+  }
+  .scan-fx.active .sf-label{animation:sfLabelIn .28s ease .05s forwards;}
+
+  @keyframes sfSweep{0%{top:-8%;} 100%{top:106%;}}
+  @keyframes sfGridIn{from{opacity:0;} to{opacity:.5;}}
+  @keyframes sfLabelIn{from{opacity:0; transform:translate(-50%,-4px);} to{opacity:1; transform:translate(-50%,0);}}
+
+  .scan-fx-box{
+    position:relative; height:76px; border:1px solid var(--border-soft); border-radius:12px;
+    background:var(--surface-2); overflow:hidden; margin-bottom:18px;
+  }
+
+  /* ---------- generic section headers ---------- */
+  .sec-head{max-width:640px; margin-bottom:48px;}
+  .sec-head h2{font-size:clamp(1.6rem,2.8vw,2.3rem); font-weight:600;}
+  .sec-head p{margin-top:12px; font-size:1.02rem;}
+
+  /* ---------- features ---------- */
+  .feat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .feat-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); padding:26px;}
+  .feat-icon{width:38px; height:38px; border-radius:10px; display:grid; place-items:center; background:var(--surface-3); color:var(--accent-a); margin-bottom:16px;}
+  .feat-icon svg{width:19px; height:19px;}
+  .feat-card h3{font-size:1.05rem; font-weight:700; font-family:var(--font-body); margin-bottom:8px;}
+  .feat-card p{font-size:.86rem;}
+
+  /* ---------- how it works ---------- */
+  .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative;}
+  .step{padding:0 20px 0 0; position:relative;}
+  .step:not(:last-child)::after{
+    content:''; position:absolute; top:19px; left:calc(100% - 10px); width:calc(100% - 20px); height:1px;
+    background:repeating-linear-gradient(90deg,var(--border) 0 6px, transparent 6px 12px);
+  }
+  .step-num{font-family:var(--font-mono); font-size:.78rem; color:var(--bg); background:var(--accent-a); width:38px; height:38px; border-radius:50%; display:grid; place-items:center; margin-bottom:16px; font-weight:700;}
+  .step h4{font-size:.98rem; font-weight:700; font-family:var(--font-body); margin-bottom:6px;}
+  .step p{font-size:.82rem;}
+
+  /* ---------- pillars deep section ---------- */
+  .lens-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .lens-card{
+    background:linear-gradient(180deg,var(--surface),var(--bg-raise)); border:1px solid var(--border); border-radius:var(--radius-card);
+    padding:24px; position:relative;
+  }
+  .lens-gauge{width:64px; height:64px; margin-bottom:16px; position:relative;}
+  .lens-gauge svg{width:100%; height:100%; transform:rotate(-90deg);}
+  .lens-gauge .track{fill:none; stroke:var(--surface-3); stroke-width:6;}
+  .lens-gauge .fill{fill:none; stroke-width:6; stroke-linecap:round;}
+  .lens-gauge .label{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--font-mono); font-size:.92rem; font-weight:600;}
+  .lens-card h3{font-size:1rem; font-weight:700; font-family:var(--font-body); margin-bottom:6px;}
+  .lens-card p{font-size:.82rem;}
+
+  /* ---------- testimonials ---------- */
+  .testi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .testi-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); padding:24px;}
+  .testi-card p{color:var(--text); font-size:.92rem; margin-bottom:18px;}
+  .testi-who{display:flex; align-items:center; gap:10px;}
+  .testi-avatar{width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--accent-a-dim),var(--accent-b-dim)); display:grid; place-items:center; font-family:var(--font-mono); font-size:.78rem; font-weight:700; color:var(--accent-b); border:1px solid var(--border);}
+  .testi-name{font-size:.84rem; font-weight:700;}
+  .testi-role{font-size:.74rem; color:var(--text-faint);}
+
+  /* ---------- pricing ---------- */
+  .price-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:stretch;}
+  .price-card{background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:28px; display:flex; flex-direction:column;}
+  .price-card.feat{border-color:var(--accent-b); background:linear-gradient(180deg,var(--surface-2),var(--surface)); box-shadow:0 0 0 1px var(--accent-b-dim), var(--shadow-lg);}
+  .price-tag{font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--accent-b); background:var(--accent-b-dim); align-self:flex-start; padding:4px 10px; border-radius:var(--radius-pill); margin-bottom:14px;}
+  .price-card h3{font-size:1.1rem; font-weight:700; font-family:var(--font-body);}
+  .price-amount{font-family:var(--font-display); font-size:2.4rem; font-weight:600; margin:14px 0 4px;}
+  .price-amount span{font-size:.95rem; color:var(--text-faint); font-family:var(--font-body); font-weight:500;}
+  .price-card > p{font-size:.84rem; margin-bottom:20px;}
+  .price-card ul{list-style:none; margin:0 0 24px; padding:0; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .price-card li{font-size:.84rem; color:var(--text-dim); display:flex; gap:9px; align-items:flex-start;}
+  .price-card li svg{flex:none; width:14px; height:14px; margin-top:2px; color:var(--good);}
+  .price-card .btn{justify-content:center; width:100%;}
+
+  footer{padding:50px 0 70px; border-top:1px solid var(--border-soft); margin-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+  footer .brand{font-size:1.05rem;}
+  footer .fine{font-size:.78rem; color:var(--text-faint);}
+
+  /* ================= DASHBOARD ================= */
+  #view-dashboard{padding-top:32px;}
+  .dash-head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:28px; gap:20px; flex-wrap:wrap;}
+  .dash-head h1{font-size:1.8rem; font-weight:600;}
+  .dash-head p{margin-top:6px; font-size:.88rem;}
+  .plan-pill{display:inline-flex; align-items:center; gap:7px; background:var(--surface-2); border:1px solid var(--border); padding:7px 14px; border-radius:var(--radius-pill); font-size:.78rem; font-weight:700;}
+  .plan-pill .dot{background:var(--accent-a);}
+
+  .stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px;}
+  .stat-card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); padding:20px;}
+  .stat-card .lbl{font-size:.74rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; display:block;}
+  .stat-card .val{font-family:var(--font-mono); font-size:1.7rem; font-weight:600;}
+  .stat-card .delta{font-size:.76rem; margin-top:6px; display:flex; align-items:center; gap:5px;}
+  .delta.up{color:var(--good);} .delta.down{color:var(--bad);} .delta.flat{color:var(--text-faint);}
+
+  .dash-grid{display:grid; grid-template-columns:1.3fr .95fr; gap:18px; margin-bottom:18px;}
+  .panel{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-card); padding:22px;}
+  .panel-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
+  .panel-head h3{font-size:.98rem; font-weight:700; font-family:var(--font-body);}
+  .panel-head .sub{font-size:.74rem; color:var(--text-faint);}
+  canvas{max-width:100%; display:block;}
+
+  .hist-list{display:flex; flex-direction:column; gap:2px; max-height:320px; overflow:auto;}
+  .hist-row{display:grid; grid-template-columns:1fr auto auto auto; gap:14px; align-items:center; padding:11px 8px; border-radius:8px; transition:background .15s;}
+  .hist-row:hover{background:var(--surface-2);}
+  .hist-idea{font-size:.83rem; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .hist-date{font-size:.72rem; color:var(--text-faint); font-family:var(--font-mono);}
+  .hist-score{font-family:var(--font-mono); font-size:.85rem; font-weight:700;}
+  .hist-verdict{font-size:.68rem; padding:3px 9px; border-radius:var(--radius-pill); font-weight:700; white-space:nowrap;}
+
+  .tabs{display:flex; gap:0; flex-wrap:wrap; margin-bottom:22px; border-bottom:1px solid var(--border-soft);}
+  .tab-btn{background:none; border:none; color:var(--text-faint); font-weight:700; font-size:.85rem; padding:11px 4px; margin-right:20px; cursor:pointer; border-bottom:2px solid transparent; position:relative; top:1px; white-space:nowrap;}
+  .tab-btn.active{color:var(--text); border-color:var(--accent-b);}
+  .plan-chip{
+    font-size:.6rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--text-faint);
+    background:var(--surface-3); border:1px solid var(--border-soft); padding:1px 7px; border-radius:var(--radius-pill);
+    margin-left:6px; vertical-align:middle; position:relative; top:-1px;
+  }
+
+  .scan-form{display:flex; gap:10px; margin-bottom:22px;}
+  .scan-form input{flex:1; background:var(--surface-2); border:1px solid var(--border); color:var(--text); padding:13px 15px; border-radius:10px; font-size:.9rem; font-family:inherit;}
+  .scan-form input:focus{outline:none; border-color:var(--accent-b);}
+
+  .progress-steps{display:flex; flex-direction:column; gap:10px; margin-bottom:24px;}
+  .pstep{display:flex; align-items:center; gap:10px; font-size:.84rem; color:var(--text-faint); transition:color .2s;}
+  .pstep .ring{width:16px; height:16px; border-radius:50%; border:2px solid var(--border); flex:none; position:relative;}
+  .pstep.active .ring{border-color:var(--accent-b); animation:spin 1s linear infinite;}
+  .pstep.done .ring{border-color:var(--good); background:var(--good);}
+  .pstep.active{color:var(--text);}
+  .pstep.done{color:var(--text-dim);}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .card-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .result-card{background:var(--surface-2); border:1px solid var(--border-soft); border-radius:12px; padding:18px;}
+  .result-card .rc-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:10px;}
+  .result-card h4{font-size:.92rem; font-weight:700; font-family:var(--font-body);}
+  .result-card .rc-meta{font-size:.72rem; color:var(--text-faint); margin-top:3px;}
+  .threat-bar{height:5px; border-radius:3px; background:var(--surface-3); overflow:hidden; margin-top:10px;}
+  .threat-fill{height:100%; border-radius:3px;}
+  .badge{font-size:.68rem; padding:3px 9px; border-radius:var(--radius-pill); font-weight:700; white-space:nowrap;}
+  .kv-row{display:flex; justify-content:space-between; font-size:.78rem; color:var(--text-dim); margin-top:6px;}
+  .kv-row b{color:var(--text); font-family:var(--font-mono); font-weight:600;}
+
+  .empty-hint{font-size:.85rem; color:var(--text-faint); text-align:center; padding:30px 10px;}
+
+  /* ---------- viral finder ---------- */
+  .platform-row{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
+  .platform-chip{font-size:.66rem; font-weight:700; padding:2px 8px; border-radius:var(--radius-pill); background:var(--surface-3); color:var(--text-dim); border:1px solid var(--border-soft);}
+  .virality-row{display:flex; align-items:center; gap:10px; margin-top:12px;}
+  .virality-track{flex:1; height:6px; border-radius:3px; background:var(--surface-3); overflow:hidden;}
+  .virality-fill{height:100%; border-radius:3px; background:linear-gradient(90deg,var(--accent-a),var(--accent-b));}
+  .virality-num{font-family:var(--font-mono); font-size:.78rem; font-weight:700; color:var(--text);}
+  .growth-tag{font-size:.7rem; color:var(--good); font-family:var(--font-mono); margin-top:8px; display:block;}
+
+  /* ---------- 10/10 finder ---------- */
+  .elite-panel{background:var(--surface-2); border:1px solid var(--border-soft); border-radius:14px; padding:22px; position:relative; overflow:hidden;}
+  .elite-badge{
+    display:inline-flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:.7rem; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--on-accent); background:linear-gradient(135deg,var(--accent-a),var(--accent-b));
+    padding:4px 11px; border-radius:var(--radius-pill); margin-bottom:14px;
+  }
+
+  /* ---------- photo scan ---------- */
+  .photo-drop{
+    position:absolute; inset:0; z-index:2;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    border:1.5px dashed var(--border); box-sizing:border-box; padding:20px; text-align:center;
+    background:var(--surface-2); cursor:pointer; transition:border-color .15s, background .15s;
+  }
+  .photo-drop.has-image{opacity:0; pointer-events:none;}
+  .photo-drop:hover{border-color:var(--accent-b); background:var(--surface-3);}
+  .photo-drop svg{width:26px; height:26px; color:var(--text-faint);}
+  .photo-drop b{font-size:.88rem; color:var(--text);}
+  .photo-drop span{font-size:.76rem; color:var(--text-faint);}
+  .photo-scan-area{display:grid; grid-template-columns:220px 1fr; gap:22px; align-items:start;}
+  .photo-frame{position:relative; border-radius:14px; overflow:hidden; border:1px solid var(--border); background:var(--surface-2); aspect-ratio:1; display:flex; align-items:center; justify-content:center;}
+  .photo-frame img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:1;}
+  .photo-result{flex:1;}
+  .photo-result .score-line{display:flex; align-items:baseline; gap:10px; margin-bottom:6px;}
+  .photo-result .score-big{font-family:var(--font-display); font-size:2.1rem; font-weight:600;}
+  .photo-cat{font-size:.78rem; color:var(--text-faint); margin-bottom:14px;}
+  @media (max-width:620px){ .photo-scan-area{grid-template-columns:1fr;} .photo-frame{aspect-ratio:16/10; max-width:260px; margin:0 auto;} }
+
+  /* ---------- toolkit ---------- */
+  .tool-block{margin-bottom:34px; padding-bottom:34px; border-bottom:1px solid var(--border-soft);}
+  .tool-block:last-child{margin-bottom:0; padding-bottom:0; border-bottom:none;}
+  .tool-block h3{font-size:1rem; font-weight:700; font-family:var(--font-body); margin-bottom:4px;}
+  .tool-block .tool-sub{font-size:.8rem; margin-bottom:18px;}
+
+  .calc-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px;}
+  .calc-field label{display:block; font-size:.72rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:.05em; margin-bottom:7px;}
+  .calc-field .input-wrap{position:relative;}
+  .calc-field .input-wrap span{position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-faint); font-size:.85rem;}
+  .calc-field input{
+    width:100%; background:var(--surface-2); border:1px solid var(--border); color:var(--text);
+    padding:11px 12px 11px 24px; border-radius:9px; font-size:.9rem; font-family:var(--font-mono);
+  }
+  .calc-field input:focus{outline:none; border-color:var(--accent-b);}
+  .calc-result{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .calc-tile{background:var(--surface-2); border:1px solid var(--border-soft); border-radius:12px; padding:16px;}
+  .calc-tile .lbl{font-size:.72rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:.05em; display:block; margin-bottom:8px;}
+  .calc-tile .val{font-family:var(--font-mono); font-size:1.4rem; font-weight:700;}
+
+  .compare-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .compare-col select{
+    width:100%; background:var(--surface-2); border:1px solid var(--border); color:var(--text);
+    padding:11px 12px; border-radius:9px; font-size:.85rem; font-family:inherit; margin-bottom:16px;
+  }
+  .compare-col select:focus{outline:none; border-color:var(--accent-b);}
+  .compare-score{font-family:var(--font-display); font-size:1.9rem; font-weight:600; margin-bottom:12px;}
+
+  .checklist-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .checklist-list li{
+    display:flex; align-items:flex-start; gap:10px; font-size:.86rem; color:var(--text); background:var(--surface-2);
+    border:1px solid var(--border-soft); border-radius:10px; padding:12px 14px;
+  }
+  .checklist-list .cl-num{
+    flex:none; width:20px; height:20px; border-radius:50%; background:var(--surface-3); color:var(--accent-a);
+    font-family:var(--font-mono); font-size:.7rem; font-weight:700; display:grid; place-items:center; margin-top:1px;
+  }
+  @media (max-width:760px){ .calc-grid{grid-template-columns:repeat(2,1fr);} .calc-result{grid-template-columns:1fr;} .compare-grid{grid-template-columns:1fr;} }
+
+  /* ---------- roadmap ---------- */
+  .result-card.roadmap{border-style:dashed; opacity:.88;}
+  .roadmap-status{background:var(--surface-3); color:var(--text-faint);}
+
+  @media (max-width:920px){
+    .hero-grid, .dash-grid{grid-template-columns:1fr;}
+    .feat-grid, .lens-grid, .testi-grid, .price-grid, .stat-grid, .card-grid{grid-template-columns:repeat(2,1fr);}
+    .steps{grid-template-columns:repeat(2,1fr); row-gap:26px;}
+    .step::after{display:none;}
+    .nav-links{display:none;}
+  }
+  @media (max-width:620px){
+    section{padding:56px 0;}
+    .feat-grid, .lens-grid, .testi-grid, .price-grid, .stat-grid, .card-grid, .steps{grid-template-columns:1fr;}
+    .pr-grid{grid-template-columns:1fr;}
+    .hero-form{flex-direction:column;}
+    .dash-head{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+
+<div class="shell">
+  <div class="topbar">
+    <div class="brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" style="stroke:var(--on-accent);" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l4 4L20 6"/></svg></span>Validata</div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#lenses">Scoring</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <div class="nav-toggle" role="tablist" aria-label="View">
+      <button id="nav-landing" class="active" onclick="showView('landing')">Home</button>
+      <button id="nav-dashboard" onclick="showView('dashboard')">Dashboard</button>
+    </div>
+  </div>
+
+  <!-- ============ LANDING ============ -->
+  <div id="view-landing">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">AI-assisted idea validation</div>
+          <h1>Know if it's worth building <em>before</em> you build it.</h1>
+          <p class="hero-sub">Validata scores any product idea 1&ndash;10 across four pillars &mdash; Demand, Innovation, Execution, Monetization &mdash; backed by live research across Reddit, X and the open web.</p>
+          <div class="hero-form">
+            <input id="idea-input" type="text" placeholder="e.g. A Chrome extension that auto-drafts LinkedIn outreach" value="AI meal-prep planner for night-shift workers" />
+            <button class="btn btn-primary" id="score-btn" onclick="runDemo()">
+              Score it
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+          <div class="hero-hint">Deterministic demo scoring &middot; <button onclick="surpriseIdea()">try a random idea</button></div>
+          <div class="trust-row">
+            <div class="stat"><b class="num">6,400+</b><span>ideas scored</span></div>
+            <div class="stat"><b class="num">3</b><span>research sources</span></div>
+            <div class="stat"><b class="num">41s</b><span>avg. time to verdict</span></div>
+          </div>
+        </div>
+
+        <div class="verdict-card">
+          <div class="scan-fx" id="hero-scanfx">
+            <div class="sf-grid"></div>
+            <div class="sf-beam"></div>
+            <span class="sf-corner tl"></span><span class="sf-corner tr"></span>
+            <span class="sf-corner bl"></span><span class="sf-corner br"></span>
+            <div class="sf-label" id="hero-scanfx-label">Analyzing signal</div>
+          </div>
+          <div class="verdict-body" id="verdict-body">
+          <div class="verdict-top">
+            <div>
+              <div class="label">Verdict for</div>
+              <div class="verdict-idea" id="v-idea">AI meal-prep planner for night-shift workers</div>
+            </div>
+            <div class="verdict-score">
+              <div class="big num" id="v-score">7.4</div>
+              <div class="verdict-pill" id="v-pill" style="background:var(--good-dim); color:var(--good);"><span class="dot"></span><span id="v-pill-text">Promising signal</span></div>
+            </div>
+          </div>
+
+          <div class="pillar-row" id="v-pillars"></div>
+
+          <div class="pr-grid">
+            <div class="pr-col pros"><h4>Pros</h4><ul id="v-pros"></ul></div>
+            <div class="pr-col risks"><h4>Risks</h4><ul id="v-risks"></ul></div>
+          </div>
+
+          <div class="source-row" id="v-sources"></div>
+
+          <div class="boost-prompt" id="v-boost-prompt" hidden>
+            <span>This idea is scoring low &mdash; want AI to suggest a fix?</span>
+            <button class="btn btn-primary btn-sm" onclick="boostIdea('v')">Boost this idea</button>
+          </div>
+          <div class="boost-panel" id="v-boost-panel" hidden></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="sec-head">
+        <div class="eyebrow">Why Validata</div>
+        <h2>Everything you need before you write a line of code</h2>
+        <p>Stop guessing. Every score cites where the evidence came from.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+          <h3>Live web research</h3>
+          <p>Pulls real discussion from Reddit threads, X posts and general web results so the verdict isn't a guess &mdash; it's cited.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/></svg></div>
+          <h3>Four-lens scoring</h3>
+          <p>Demand, Innovation, Execution and Monetization scored independently, so you see exactly where an idea is weak.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+          <h3>Deep Scan</h3>
+          <p>One click launches a background competitor &amp; market scan, and drops the report in your dashboard when it's done.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+          <h3>Product Finder</h3>
+          <p>No idea yet? Discovery mode scans for candidate ideas and scores them for you automatically.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+          <h3>One-click PDF report</h3>
+          <p>Export any validation as a clean, shareable PDF &mdash; ready to drop into a pitch deck or investor update.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11z"/></svg></div>
+          <h3>Your history, private</h3>
+          <p>Every idea you score is saved to your own account &mdash; nobody else sees what you're validating.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L4.5 14.5H12L11 22l8.5-12.5H12z"/></svg></div>
+          <h3>Viral Product Finder</h3>
+          <p>Surfaces what's trending right now on TikTok, Instagram and Amazon, with a virality score and growth rate per product.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/></svg></div>
+          <h3>10/10 Finder</h3>
+          <p>Skip the noise &mdash; this mode only ever surfaces ideas that score 9.0 or above across all four lenses.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8a2 2 0 0 1 2-2h1.2a1 1 0 0 0 .9-.55l.6-1.2A1 1 0 0 1 9.6 3.6h4.8a1 1 0 0 1 .9.65l.6 1.2a1 1 0 0 0 .9.55H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.4"/></svg></div>
+          <h3>Photo Scan &amp; Rate</h3>
+          <p>Point your camera at a physical product on a shelf or from a supplier sample and get an instant resale rating.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="sec-head">
+        <div class="eyebrow">How it works</div>
+        <h2>From idea to verdict in four steps</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><h4>Describe the idea</h4><p>One sentence is enough &mdash; Validata fills in the rest.</p></div>
+        <div class="step"><div class="step-num">2</div><h4>We research it live</h4><p>Reddit, X and web sources are pulled and cross-checked in real time.</p></div>
+        <div class="step"><div class="step-num">3</div><h4>Four-lens scoring</h4><p>Demand, Innovation, Execution and Monetization are each scored 1&ndash;10.</p></div>
+        <div class="step"><div class="step-num">4</div><h4>Get your verdict</h4><p>A plain-English recommendation, backed by cited sources and pros/risks.</p></div>
+      </div>
+    </section>
+
+    <section id="lenses">
+      <div class="sec-head">
+        <div class="eyebrow">The four lenses</div>
+        <h2>Every idea scored on what actually matters</h2>
+      </div>
+      <div class="lens-grid" id="lens-grid"></div>
+    </section>
+
+    <section id="testimonials">
+      <div class="sec-head">
+        <div class="eyebrow">From the waitlist</div>
+        <h2>Builders use Validata to kill bad ideas fast</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <p>&ldquo;Saved me three weekends. The demand score flagged a saturated niche before I opened my editor.&rdquo;</p>
+          <div class="testi-who"><div class="testi-avatar">JT</div><div><div class="testi-name">Jonas T.</div><div class="testi-role">Indie hacker</div></div></div>
+        </div>
+        <div class="testi-card">
+          <p>&ldquo;The Deep Scan competitor list was more useful than the market report I paid a freelancer for.&rdquo;</p>
+          <div class="testi-who"><div class="testi-avatar">RA</div><div><div class="testi-name">Rhea A.</div><div class="testi-role">Solo founder</div></div></div>
+        </div>
+        <div class="testi-card">
+          <p>&ldquo;I run every client pitch through it now. The PDF export makes it look like a real report.&rdquo;</p>
+          <div class="testi-who"><div class="testi-avatar">MK</div><div><div class="testi-name">Milo K.</div><div class="testi-role">Product consultant</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="sec-head">
+        <div class="eyebrow">Pricing</div>
+        <h2>Start free, upgrade when it earns its keep</h2>
+      </div>
+      <div class="price-grid">
+        <div class="price-card">
+          <div class="price-tag">Explorer</div>
+          <h3>Kick the tyres</h3>
+          <div class="price-amount">$0<span>/mo</span></div>
+          <p>For your first few product ideas.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>3 scans / month &mdash; any tool</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Four-lens scoring</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Basic PDF export</li>
+          </ul>
+          <button class="btn btn-ghost">Start free</button>
+        </div>
+        <div class="price-card feat">
+          <div class="price-tag">Founder</div>
+          <h3>For active sellers</h3>
+          <div class="price-amount">$15<span>/mo</span></div>
+          <p>Everything you need to vet and source weekly.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>40 scans / month &mdash; any tool</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Product &amp; Supplier Finder</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Photo Scan &amp; Rate</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Profit calculator &amp; idea comparison</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Full history + trends</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Branded PDF export</li>
+          </ul>
+          <button class="btn btn-primary">Upgrade to Founder</button>
+        </div>
+        <div class="price-card">
+          <div class="price-tag">Scale</div>
+          <h3>For teams &amp; agencies</h3>
+          <div class="price-amount">$49<span>/mo</span></div>
+          <p>Validate and source on behalf of clients or a team.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Unlimited Deep Scans &amp; Photo Scans</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>10/10 Finder &amp; unlimited Viral Finder</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Launch checklist generator</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Priority research queue</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Team seats &amp; shared watchlists</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l5 5L20 6"/></svg>Early access to roadmap tools</li>
+          </ul>
+          <button class="btn btn-ghost">Upgrade to Scale</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="brand"><span class="brand-mark" style="width:26px;height:26px;"><svg viewBox="0 0 24 24" fill="none" style="stroke:var(--on-accent);" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l4 4L20 6"/></svg></span>Validata</div>
+      <div class="fine">Demo build &middot; scoring shown here is deterministic sample data, not live AI research.</div>
+    </footer>
+  </div>
+
+  <!-- ============ DASHBOARD ============ -->
+  <div id="view-dashboard" hidden>
+    <div class="dash-head">
+      <div>
+        <h1>Welcome back</h1>
+        <p>Here's how your validations are trending.</p>
+      </div>
+      <div class="plan-pill"><span class="dot"></span>Founder plan</div>
+    </div>
+
+    <div class="panel">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-btn-validate" onclick="showTab('validate')">Validate Idea</button>
+        <button class="tab-btn" id="tab-btn-scan" onclick="showTab('scan')">Deep Scan</button>
+        <button class="tab-btn" id="tab-btn-finder" onclick="showTab('finder')">Product Finder</button>
+        <button class="tab-btn" id="tab-btn-viral" onclick="showTab('viral')">Viral Finder</button>
+        <button class="tab-btn" id="tab-btn-youtube" onclick="showTab('youtube')">YouTube Ideas</button>
+        <button class="tab-btn" id="tab-btn-elite" onclick="showTab('elite')">10/10 Finder<span class="plan-chip">Scale</span></button>
+        <button class="tab-btn" id="tab-btn-photo" onclick="showTab('photo')">Photo Scan<span class="plan-chip">Founder</span></button>
+        <button class="tab-btn" id="tab-btn-toolkit" onclick="showTab('toolkit')">Toolkit</button>
+        <button class="tab-btn" id="tab-btn-roadmap" onclick="showTab('roadmap')">Roadmap</button>
+      </div>
+
+      <div id="tab-validate">
+        <div class="scan-form">
+          <input id="dash-idea-input" type="text" placeholder="Describe a product idea to validate" value="Foldable standing desk converter for small apartments" />
+          <button class="btn btn-primary btn-sm" id="dash-score-btn" onclick="runDashboardValidation()">Score it</button>
+        </div>
+        <div class="elite-panel" id="dash-verdict-panel">
+          <div class="scan-fx" id="dash-scanfx">
+            <div class="sf-grid"></div>
+            <div class="sf-beam"></div>
+            <span class="sf-corner tl"></span><span class="sf-corner tr"></span>
+            <span class="sf-corner bl"></span><span class="sf-corner br"></span>
+            <div class="sf-label" id="dash-scanfx-label">Analyzing signal</div>
+          </div>
+          <div class="verdict-body" id="dash-verdict-body">
+            <div class="verdict-top">
+              <div><div class="label">Verdict for</div><div class="verdict-idea" id="dash-v-idea">&mdash;</div></div>
+              <div class="verdict-score"><div class="big num" id="dash-v-score">&mdash;</div>
+                <div class="verdict-pill" id="dash-v-pill"><span class="dot"></span><span id="dash-v-pill-text"></span></div>
+              </div>
+            </div>
+            <div class="pillar-row" id="dash-v-pillars"></div>
+            <div class="pr-grid">
+              <div class="pr-col pros"><h4>Pros</h4><ul id="dash-v-pros"></ul></div>
+              <div class="pr-col risks"><h4>Risks</h4><ul id="dash-v-risks"></ul></div>
+            </div>
+            <div class="source-row" id="dash-v-sources"></div>
+
+            <div class="boost-prompt" id="dash-v-boost-prompt" hidden>
+              <span>This idea is scoring low &mdash; want AI to suggest a fix?</span>
+              <button class="btn btn-primary btn-sm" onclick="boostIdea('dash-v')">Boost this idea</button>
+            </div>
+            <div class="boost-panel" id="dash-v-boost-panel" hidden></div>
+          </div>
+        </div>
+        <p class="tool-sub" style="margin-top:12px;">Scoring it here also adds it to your history below and to the trend chart.</p>
+      </div>
+
+      <div id="tab-scan" hidden>
+        <div class="scan-form">
+          <input id="scan-input" type="text" placeholder="Market or niche to scan, e.g. async standup tools" value="AI meal-prep planning apps" />
+          <button class="btn btn-primary btn-sm" id="scan-btn" onclick="runDeepScan()">Run Deep Scan</button>
+        </div>
+        <div class="scan-fx-box" id="scan-scanfx-box" hidden>
+          <div class="scan-fx" id="scan-scanfx">
+            <div class="sf-grid"></div>
+            <div class="sf-beam"></div>
+            <span class="sf-corner tl"></span><span class="sf-corner tr"></span>
+            <span class="sf-corner bl"></span><span class="sf-corner br"></span>
+            <div class="sf-label" id="scan-scanfx-label">Scanning</div>
+          </div>
+        </div>
+        <div class="progress-steps" id="scan-progress" hidden></div>
+        <div class="card-grid" id="scan-results"></div>
+        <div class="empty-hint" id="scan-empty">Run a Deep Scan to pull a live competitor &amp; market snapshot for this niche.</div>
+      </div>
+
+      <div id="tab-finder" hidden>
+        <div class="scan-form">
+          <input id="finder-input" type="text" placeholder="Product category, e.g. reusable produce bags" value="reusable silicone food storage" />
+          <button class="btn btn-primary btn-sm" id="finder-btn" onclick="runProductFinder()">Find Suppliers</button>
+        </div>
+        <div class="scan-fx-box" id="finder-scanfx-box" hidden>
+          <div class="scan-fx" id="finder-scanfx">
+            <div class="sf-grid"></div>
+            <div class="sf-beam"></div>
+            <span class="sf-corner tl"></span><span class="sf-corner tr"></span>
+            <span class="sf-corner bl"></span><span class="sf-corner br"></span>
+            <div class="sf-label" id="finder-scanfx-label">Scanning</div>
+          </div>
+        </div>
+        <div class="progress-steps" id="finder-progress" hidden></div>
+        <div class="card-grid" id="finder-results"></div>
+        <div class="empty-hint" id="finder-empty">Run Product Finder to source suppliers matched to this category.</div>
+      </div>
+
+      <div id="tab-viral" hidden>
+        <div class="scan-form">
+          <input id="viral-input" type="text" placeholder="Niche to check, e.g. home gadgets (leave blank for trending now)" value="" />
+          <button class="btn btn-primary btn-sm" id="viral-btn" onclick="runViralFinder()">Find Viral Products</button>
+        </div>
+        <div class="scan-fx-box" id="viral-scanfx-box" hidden>
+          <div class="scan-fx" id="viral-scanfx">
+            <div class="sf-grid"></div>
+            <div class="sf-beam"></div>
+            <span class="sf-corner tl"></span><span class="sf-corner tr"></span>
+            <span class="sf-corner bl"></span><span class="sf-corner br"></span>
+            <div class="sf-label" id="viral-scanfx-label">Scanning</div>
+          </div>
+        </div>
+        <div class="card-grid" id="viral-results"></div>
+        <div class="empty-hint" id="viral-empty">Scan TikTok, Instagram and Amazon movers for products trending right now.</div>
+      </div>
+
+      <div id="tab-youtube" hidden>
+        <div class="scan-form">
+          <input id="yt-input" type="text" placeholder="Channel niche or topic, e.g. home coffee brewing" value="home coffee brewing" />
+          <button class="btn btn-primary btn-sm" id="yt-btn" onclick="runYoutubeIdeas()">Generate Ideas</button>
+        </div>
+        <div class="scan-fx-box" id="yt-scanfx-box" hidden>
+          <div class="scan-fx" id="yt-scanfx">
+            <div class="sf-grid"></div>
+            <div class="sf-beam"></div>
+            <span class="sf-corner tl"></span><span class="sf-corner tr"></span>
+            <span class="sf-corner bl"></span><span class="sf-corner br"></span>
+            <div class="sf-label" id="yt-scanfx-label">Scanning trends</div>
+          </div>
+        </div>
+        <div class="card-grid" id="yt-results"></div>
+        <div class="empty-hint" id="yt-empty">Type your channel's niche and generate video concepts sized for virality, each with a hook and a format.</div>
+      </div>
+
+      <div id="tab-elite" hidden>
+        <div class="scan-form">
+          <button class="btn btn-primary btn-sm" id="elite-btn" onclick="findEliteIdea()">Find a 10/10 idea</button>
+        </div>
+        <div class="scan-fx-box" id="elite-scanfx-box" hidden>
+          <div class="scan-fx" id="elite-scanfx">
+            <div class="sf-grid"></div>
+            <div class="sf-beam"></div>
+            <span class="sf-corner tl"></span><span class="sf-corner tr"></span>
+            <span class="sf-corner bl"></span><span class="sf-corner br"></span>
+            <div class="sf-label" id="elite-scanfx-label">Scanning for elite ideas</div>
+          </div>
+        </div>
+        <div id="elite-result" hidden></div>
+        <div class="empty-hint" id="elite-empty">Only ideas that score 9.0+ across all four lenses make it through &mdash; click to surface one.</div>
+      </div>
+
+      <div id="tab-photo" hidden>
+        <div class="photo-scan-area">
+          <div>
+            <div class="photo-frame" id="photo-frame">
+              <label class="photo-drop" id="photo-drop" for="photo-input">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8a2 2 0 0 1 2-2h1.2a1 1 0 0 0 .9-.55l.6-1.2A1 1 0 0 1 9.6 3.6h4.8a1 1 0 0 1 .9.65l.6 1.2a1 1 0 0 0 .9.55H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.4"/></svg>
+                <b>Scan a product</b>
+                <span>Tap to take a photo or upload one</span>
+              </label>
+              <img id="photo-preview" alt="" hidden />
+              <input type="file" id="photo-input" accept="image/*" capture="environment" style="position:absolute; width:1px; height:1px; opacity:0;" onchange="handlePhotoScan(event)" />
+              <div class="scan-fx" id="photo-scanfx">
+                <div class="sf-grid"></div>
+                <div class="sf-beam"></div>
+                <span class="sf-corner tl"></span><span class="sf-corner tr"></span>
+                <span class="sf-corner bl"></span><span class="sf-corner br"></span>
+                <div class="sf-label" id="photo-scanfx-label">Analyzing product</div>
+              </div>
+            </div>
+          </div>
+          <div class="photo-result" id="photo-result">
+            <div class="empty-hint" id="photo-empty" style="text-align:left; padding:6px 0;">Point your camera at a physical product &mdash; a shelf find, a supplier sample, anything &mdash; and Validata rates its resell potential.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-toolkit" hidden>
+        <div class="tool-block">
+          <h3>Profit margin calculator</h3>
+          <p class="tool-sub">Live &mdash; plain math, no research needed.</p>
+          <div class="calc-grid">
+            <div class="calc-field"><label>Unit cost</label><div class="input-wrap"><span>$</span><input type="number" id="calc-cost" value="4.50" step="0.10" min="0" oninput="updateCalc()" /></div></div>
+            <div class="calc-field"><label>Shipping / unit</label><div class="input-wrap"><span>$</span><input type="number" id="calc-ship" value="2.20" step="0.10" min="0" oninput="updateCalc()" /></div></div>
+            <div class="calc-field"><label>Sell price</label><div class="input-wrap"><span>$</span><input type="number" id="calc-price" value="24.99" step="0.50" min="0" oninput="updateCalc()" /></div></div>
+            <div class="calc-field"><label>Ad spend</label><div class="input-wrap"><span>%</span><input type="number" id="calc-ads" value="30" step="1" min="0" max="100" oninput="updateCalc()" /></div></div>
+          </div>
+          <div class="calc-result">
+            <div class="calc-tile"><span class="lbl">Gross margin</span><div class="val num" id="calc-gross">—</div></div>
+            <div class="calc-tile"><span class="lbl">Profit after ads</span><div class="val num" id="calc-net">—</div></div>
+            <div class="calc-tile"><span class="lbl">Breakeven ad spend</span><div class="val num" id="calc-breakeven">—</div></div>
+          </div>
+        </div>
+
+        <div class="tool-block">
+          <h3>Idea comparison</h3>
+          <p class="tool-sub">Live &mdash; pulled from your own validation history.</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <select id="compare-a" onchange="updateCompare()"></select>
+              <div id="compare-a-body"></div>
+            </div>
+            <div class="compare-col">
+              <select id="compare-b" onchange="updateCompare()"></select>
+              <div id="compare-b-body"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-block">
+          <h3>Launch checklist generator</h3>
+          <p class="tool-sub">Live &mdash; templated from the idea you type in.</p>
+          <div class="scan-form">
+            <input id="checklist-input" type="text" placeholder="Product to launch" value="Reusable produce mesh bags" />
+            <button class="btn btn-primary btn-sm" onclick="generateChecklist()">Generate checklist</button>
+          </div>
+          <ul class="checklist-list" id="checklist-output"></ul>
+        </div>
+      </div>
+
+      <div id="tab-roadmap" hidden>
+        <p style="font-size:.86rem; margin-bottom:20px;">These need a live data source we haven't wired up yet &mdash; ad libraries, influencer databases, email delivery, a real browser extension. Shown here so nothing from the plan gets lost, not because they work yet.</p>
+        <div class="card-grid" id="roadmap-grid"></div>
+      </div>
+    </div>
+
+    <div class="stat-grid" id="stat-grid"></div>
+
+    <div class="dash-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Score trend</h3>
+          <div class="sub">Last 8 validations</div>
+        </div>
+        <canvas id="trend-canvas" width="640" height="220"></canvas>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Validation history</h3>
+          <div class="sub" id="hist-count"></div>
+        </div>
+        <div class="hist-list" id="hist-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- deterministic scoring engine ---------------- */
+  function xmur3(str){
+    let h = 1779033703 ^ str.length;
+    for (let i = 0; i < str.length; i++){
+      h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+      h = (h << 13) | (h >>> 19);
+    }
+    return function(){
+      h = Math.imul(h ^ (h >>> 16), 2246822519);
+      h = Math.imul(h ^ (h >>> 13), 3266489917);
+      h ^= h >>> 16;
+      return (h >>> 0) / 4294967296;
+    };
+  }
+
+  const PILLARS = [
+    {key:'demand', name:'Demand', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/></svg>'},
+    {key:'innovation', name:'Innovation', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/></svg>'},
+    {key:'execution', name:'Execution', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>'},
+    {key:'monetization', name:'Monetization', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.4 1.3-2.5 3-2.5s3 .9 3 2c0 3-6 1.5-6 4.5 0 1.1 1.3 2 3 2s3-1.1 3-2.5"/></svg>'}
+  ];
+
+  const PROS_POOL = [
+    "Clear, underserved audience with a recurring need",
+    "Low-cost distribution channel already exists (communities, SEO)",
+    "Simple enough MVP to ship in under 4 weeks",
+    "Recurring-revenue model fits the use case naturally",
+    "Founder-market fit: easy to reach the first 50 users directly",
+    "Wedge into a market with high switching costs for incumbents",
+    "Strong word-of-mouth potential once value is felt once",
+    "Data/workflow already exists that this idea can plug into"
+  ];
+  const RISKS_POOL = [
+    "Crowded category — differentiation will need to be sharp",
+    "Willingness to pay is unproven above a free tier",
+    "Requires trust in an AI-generated or automated output",
+    "Regulatory or compliance overhead in this space",
+    "Customer acquisition cost may be high early on",
+    "Feature is easy for a larger incumbent to copy quickly",
+    "Retention risk if the core job is only needed occasionally",
+    "Supply-side (suppliers, partners, data) may be hard to secure"
+  ];
+
+  function pick(rand, pool, n){
+    const copy = pool.slice();
+    const out = [];
+    for (let i = 0; i < n && copy.length; i++){
+      out.push(copy.splice(Math.floor(rand()*copy.length),1)[0]);
+    }
+    return out;
+  }
+
+  function verdictFor(score){
+    if (score >= 8) return {text:'Strong signal', tone:'good'};
+    if (score >= 6.5) return {text:'Promising signal', tone:'accent'};
+    if (score >= 5) return {text:'Mixed signal', tone:'warn'};
+    return {text:'Weak signal', tone:'bad'};
+  }
+
+  function toneVars(tone){
+    if (tone === 'good') return {bg:'var(--good-dim)', fg:'var(--good)'};
+    if (tone === 'warn') return {bg:'var(--warn-dim)', fg:'var(--warn)'};
+    if (tone === 'bad') return {bg:'var(--bad-dim)', fg:'var(--bad)'};
+    return {bg:'var(--accent-b-dim)', fg:'var(--accent-b)'};
+  }
+
+  function runValidation(idea){
+    const seed = idea.trim().toLowerCase() || 'idea';
+    const rand = xmur3(seed);
+    const pillars = {};
+    PILLARS.forEach((p,i) => {
+      const v = 3 + rand()*6.7 + (i===0 ? rand()*0.6 : 0);
+      pillars[p.key] = Math.min(10, Math.round(v*10)/10);
+    });
+    const overall = Math.round((pillars.demand*0.3 + pillars.innovation*0.2 + pillars.execution*0.25 + pillars.monetization*0.25) * 10) / 10;
+    const pros = pick(rand, PROS_POOL, 3);
+    const risks = pick(rand, RISKS_POOL, 2);
+    const sources = {
+      reddit: 5 + Math.floor(rand()*35),
+      x: 4 + Math.floor(rand()*28),
+      web: 3 + Math.floor(rand()*15)
+    };
+    return {idea, pillars, overall, verdict: verdictFor(overall), pros, risks, sources};
+  }
+
+  window.__validata = {runValidation};
+
+  /* ---------------- hero demo ---------------- */
+  function renderVerdictInto(prefix, result){
+    document.getElementById(prefix+'-idea').textContent = result.idea;
+    document.getElementById(prefix+'-score').textContent = result.overall.toFixed(1);
+    const pillEl = document.getElementById(prefix+'-pill');
+    const tv = toneVars(result.verdict.tone);
+    pillEl.style.background = tv.bg;
+    pillEl.style.color = tv.fg;
+    document.getElementById(prefix+'-pill-text').textContent = result.verdict.text;
+
+    const pillarsEl = document.getElementById(prefix+'-pillars');
+    pillarsEl.innerHTML = PILLARS.map(p => `
+      <div class="pillar-line">
+        <div class="pname">${p.icon}${p.name}</div>
+        <div class="pillar-track"><div class="pillar-fill" data-w="${result.pillars[p.key]*10}%" style="width:0%"></div></div>
+        <div class="pval">${result.pillars[p.key].toFixed(1)}</div>
+      </div>`).join('');
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      pillarsEl.querySelectorAll('.pillar-fill').forEach(el => { el.style.width = el.dataset.w; });
+    }));
+
+    document.getElementById(prefix+'-pros').innerHTML = result.pros.map(t => `<li>${t}</li>`).join('');
+    document.getElementById(prefix+'-risks').innerHTML = result.risks.map(t => `<li>${t}</li>`).join('');
+
+    document.getElementById(prefix+'-sources').innerHTML = `
+      <div class="source-chip">Reddit &nbsp;<b>${result.sources.reddit} mentions</b></div>
+      <div class="source-chip">X &nbsp;<b>${result.sources.x} mentions</b></div>
+      <div class="source-chip">Web &nbsp;<b>${result.sources.web} articles</b></div>`;
+
+    checkBoostEligibility(prefix, result);
+  }
+  function renderVerdict(result){ renderVerdictInto('v', result); }
+
+  /* ---------------- boost idea ---------------- */
+  const BOOST_SUGGESTIONS = {
+    demand: [
+      'Niche down to one specific, underserved buyer segment and validate demand with a 20-person waitlist before building anything.',
+      'Anchor the pitch to a painful, already-searched-for problem instead of a nice-to-have &mdash; check search volume for the exact phrase first.',
+      'Pre-sell 10 units at full price before ordering inventory or writing a line of code.',
+      'Attach the idea to a trend that already has proven demand instead of trying to create a new category.'
+    ],
+    innovation: [
+      'Add one mechanism competitors don’t have &mdash; something annoying to copy, not just a color or price change.',
+      'Bundle two existing products into one SKU so the combination itself becomes the differentiator.',
+      'Rebuild the unboxing or onboarding moment to be inherently shareable &mdash; that becomes the innovation, not the object.',
+      'Borrow a proven mechanic from an adjacent category (subscription, gamification, personalization) this niche hasn’t seen yet.'
+    ],
+    execution: [
+      'Cut the MVP scope in half &mdash; ship the single feature that proves the core value, and nothing else.',
+      'Find a supplier who can white-label an existing product instead of tooling a custom one from scratch.',
+      'Outsource the hardest 20% (manufacturing, compliance, fulfillment) to a partner instead of building it in-house.',
+      'Launch as a pre-order or waitlist first so execution risk stays capped until demand is proven.'
+    ],
+    monetization: [
+      'Move from a one-time purchase to a consumable or refill model so revenue compounds per customer.',
+      'Raise the price and pair it with a stronger guarantee &mdash; margin matters more than volume this early.',
+      'Add a natural upsell (a companion accessory or subscription tier) at the point of first purchase.',
+      'Bundle with a higher-margin add-on so blended margin clears your breakeven ad spend.'
+    ]
+  };
+
+  function checkBoostEligibility(prefix, result){
+    const promptEl = document.getElementById(prefix+'-boost-prompt');
+    if (!promptEl) return;
+    const panelEl = document.getElementById(prefix+'-boost-panel');
+    panelEl.hidden = true;
+    panelEl.innerHTML = '';
+    promptEl.hidden = result.overall >= 7;
+    promptEl.dataset.idea = result.idea;
+    promptEl.dataset.pillars = JSON.stringify(result.pillars);
+  }
+
+  function boostIdea(prefix){
+    const promptEl = document.getElementById(prefix+'-boost-prompt');
+    const panelEl = document.getElementById(prefix+'-boost-panel');
+    const idea = promptEl.dataset.idea;
+    const pillars = JSON.parse(promptEl.dataset.pillars);
+
+    const weakestKey = PILLARS.map(p => p.key).reduce((a,b) => pillars[a] <= pillars[b] ? a : b);
+    const weakestPillar = PILLARS.find(p => p.key === weakestKey);
+    const pickRand = xmur3(idea.toLowerCase() + '::boost::' + weakestKey);
+    const pool = BOOST_SUGGESTIONS[weakestKey];
+    const suggestion = pool[Math.floor(pickRand()*pool.length)];
+    const uplift = Math.round((1.4 + pickRand()*1.4) * 10) / 10;
+
+    const newPillars = Object.assign({}, pillars, {[weakestKey]: Math.min(9.6, Math.round((pillars[weakestKey]+uplift)*10)/10)});
+    const weighOverall = p => Math.round((p.demand*0.3 + p.innovation*0.2 + p.execution*0.25 + p.monetization*0.25) * 10) / 10;
+    const oldOverall = weighOverall(pillars);
+    const newOverall = weighOverall(newPillars);
+
+    panelEl.hidden = false;
+    panelEl.innerHTML = `
+      <div class="boost-header"><span class="boost-tag">AI boost</span><b>${weakestPillar.name} is holding this idea back</b></div>
+      <p>${suggestion}</p>
+      <div class="boost-compare">
+        <div class="boost-score"><div class="num">${oldOverall.toFixed(1)}</div><div class="lbl">Current</div></div>
+        <div class="boost-arrow">&rarr;</div>
+        <div class="boost-score"><div class="num" style="color:var(--good);">${newOverall.toFixed(1)}</div><div class="lbl">Projected</div></div>
+        <span class="badge" style="background:var(--good-dim); color:var(--good); margin-left:auto;">+${(newOverall-oldOverall).toFixed(1)}</span>
+      </div>`;
+  }
+  window.boostIdea = boostIdea;
+
+  /* ---------------- shared scan fx ---------------- */
+  function playScan(overlayId, duration, label, labelId){
+    const overlay = document.getElementById(overlayId);
+    if (labelId) document.getElementById(labelId).textContent = label;
+    overlay.style.setProperty('--scan-dur', duration + 'ms');
+    overlay.classList.remove('active', 'fade-out');
+    void overlay.offsetWidth; // restart animation
+    overlay.classList.add('active');
+    return new Promise(resolve => {
+      setTimeout(() => {
+        overlay.classList.add('fade-out');
+        setTimeout(() => overlay.classList.remove('active', 'fade-out'), 220);
+        resolve();
+      }, duration);
+    });
+  }
+
+  async function runDemo(){
+    const idea = document.getElementById('idea-input').value.trim();
+    if (!idea) return;
+    const btn = document.getElementById('score-btn');
+    const body = document.getElementById('verdict-body');
+    btn.disabled = true;
+    body.classList.add('scanning');
+    await playScan('hero-scanfx', 1100, 'Analyzing signal', 'hero-scanfx-label');
+    renderVerdict(runValidation(idea));
+    body.classList.remove('scanning');
+    btn.disabled = false;
+  }
+  window.runDemo = runDemo;
+
+  const SURPRISE_IDEAS = [
+    "Subscription box for indoor herb gardens",
+    "Async standup bot for remote engineering teams",
+    "Local trades marketplace app for renters",
+    "Browser extension that auto-drafts LinkedIn outreach",
+    "Micro-SaaS that chases unpaid invoices for freelancers",
+    "Niche job board for climate-tech engineers",
+    "AI resume tailor for mid-career switchers",
+    "Marketplace for renting unused home gym equipment"
+  ];
+  async function surpriseIdea(){
+    const idea = SURPRISE_IDEAS[Math.floor(Math.random()*SURPRISE_IDEAS.length)];
+    document.getElementById('idea-input').value = idea;
+    const btn = document.getElementById('score-btn');
+    const body = document.getElementById('verdict-body');
+    btn.disabled = true;
+    body.classList.add('scanning');
+    await playScan('hero-scanfx', 1100, 'Analyzing signal', 'hero-scanfx-label');
+    renderVerdict(runValidation(idea));
+    body.classList.remove('scanning');
+    btn.disabled = false;
+  }
+  window.surpriseIdea = surpriseIdea;
+
+  /* ---------------- lens gauges (landing) ---------------- */
+  const LENS_COPY = {
+    demand:"Is anyone actually asking for this? We measure search intent, community chatter and repeat pain-point mentions.",
+    innovation:"How differentiated is it from what already exists, and is that difference one people will pay for?",
+    execution:"Can a small team realistically ship a first version, given the technical and operational complexity?",
+    monetization:"Is there a believable path from user to paying customer, and how large is that ceiling?"
+  };
+  function renderLenses(){
+    const demoScore = runValidation('AI meal-prep planner for night-shift workers');
+    const grid = document.getElementById('lens-grid');
+    const circ = 2*Math.PI*26;
+    grid.innerHTML = PILLARS.map(p => {
+      const val = demoScore.pillars[p.key];
+      const frac = val/10;
+      return `
+      <div class="lens-card">
+        <div class="lens-gauge">
+          <svg viewBox="0 0 64 64">
+            <circle class="track" cx="32" cy="32" r="26"></circle>
+            <circle class="fill" cx="32" cy="32" r="26" stroke="url(#lensGrad)"
+              stroke-dasharray="${circ}" stroke-dashoffset="${circ*(1-frac)}"></circle>
+            <defs><linearGradient id="lensGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#3B7CFF"/><stop offset="100%" stop-color="#6EC1FF"/>
+            </linearGradient></defs>
+          </svg>
+          <div class="label num">${val.toFixed(1)}</div>
+        </div>
+        <h3>${p.name}</h3>
+        <p>${LENS_COPY[p.key]}</p>
+      </div>`;
+    }).join('');
+  }
+
+  /* ---------------- view switching ---------------- */
+  function showView(view){
+    const landing = document.getElementById('view-landing');
+    const dash = document.getElementById('view-dashboard');
+    document.getElementById('nav-landing').classList.toggle('active', view==='landing');
+    document.getElementById('nav-dashboard').classList.toggle('active', view==='dashboard');
+    landing.hidden = view !== 'landing';
+    dash.hidden = view !== 'dashboard';
+    if (view === 'dashboard') initDashboard();
+  }
+  window.showView = showView;
+
+  /* ---------------- dashboard ---------------- */
+  const HISTORY_IDEAS = [
+    "AI meal-prep planner for night-shift workers",
+    "Async standup bot for remote engineering teams",
+    "Local trades marketplace app for renters",
+    "Subscription box for indoor herb gardens",
+    "Browser extension that auto-drafts LinkedIn outreach",
+    "Micro-SaaS that chases unpaid invoices for freelancers",
+    "Niche job board for climate-tech engineers",
+    "AI resume tailor for mid-career switchers"
+  ];
+
+  let dashboardBuilt = false;
+  let historyData = [];
+
+  function buildHistory(){
+    const now = new Date('2026-09-14T09:00:00');
+    return HISTORY_IDEAS.map((idea, i) => {
+      const r = runValidation(idea);
+      const d = new Date(now);
+      d.setDate(d.getDate() - (HISTORY_IDEAS.length - i) * 6);
+      return Object.assign(r, {date: d});
+    });
+  }
+
+  function fmtDate(d){
+    return d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+  }
+
+  function refreshDashboardData(){
+    const avg = historyData.reduce((s,r) => s+r.overall, 0) / historyData.length;
+    const best = historyData.reduce((a,b) => a.overall > b.overall ? a : b);
+    const stats = [
+      {lbl:'Total validations', val: historyData.length, delta:'+2 this week', tone:'up'},
+      {lbl:'Average score', val: avg.toFixed(1), delta:'+0.4 vs last month', tone:'up'},
+      {lbl:'Deep scans run', val: 4, delta:'1 in progress', tone:'flat'},
+      {lbl:'Top idea', val: best.overall.toFixed(1), delta: best.idea.slice(0,22)+'…', tone:'flat'}
+    ];
+    document.getElementById('stat-grid').innerHTML = stats.map(s => `
+      <div class="stat-card">
+        <span class="lbl">${s.lbl}</span>
+        <div class="val">${s.val}</div>
+        <div class="delta ${s.tone}">${s.delta}</div>
+      </div>`).join('');
+
+    document.getElementById('hist-count').textContent = historyData.length + ' ideas';
+    document.getElementById('hist-list').innerHTML = historyData.slice().reverse().map(r => {
+      const tv = toneVars(r.verdict.tone);
+      return `
+      <div class="hist-row">
+        <div>
+          <div class="hist-idea">${r.idea}</div>
+          <div class="hist-date">${fmtDate(r.date)}</div>
+        </div>
+        <div class="hist-score">${r.overall.toFixed(1)}</div>
+        <div class="hist-verdict" style="background:${tv.bg}; color:${tv.fg};">${r.verdict.text}</div>
+        <button class="btn btn-ghost btn-sm" onclick='exportPdf(${JSON.stringify(r.idea)})'>PDF</button>
+      </div>`;
+    }).join('');
+
+    drawTrend(historyData);
+    populateComparePickers();
+  }
+
+  function initDashboard(){
+    if (dashboardBuilt) return;
+    dashboardBuilt = true;
+    historyData = buildHistory();
+    refreshDashboardData();
+    populateRoadmap();
+    updateCalc();
+    renderVerdictInto('dash-v', runValidation(document.getElementById('dash-idea-input').value));
+  }
+
+  async function runDashboardValidation(){
+    const idea = document.getElementById('dash-idea-input').value.trim();
+    if (!idea) return;
+    const btn = document.getElementById('dash-score-btn');
+    const body = document.getElementById('dash-verdict-body');
+    btn.disabled = true;
+    body.classList.add('scanning');
+    await playScan('dash-scanfx', 1100, 'Analyzing signal', 'dash-scanfx-label');
+    const result = runValidation(idea);
+    renderVerdictInto('dash-v', result);
+    body.classList.remove('scanning');
+    btn.disabled = false;
+    historyData.push(Object.assign({}, result, {date: new Date('2026-09-14T09:00:00')}));
+    refreshDashboardData();
+  }
+  window.runDashboardValidation = runDashboardValidation;
+
+  function drawTrend(data){
+    const canvas = document.getElementById('trend-canvas');
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || 600, cssH = 220;
+    canvas.width = cssW * dpr; canvas.height = cssH * dpr;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0,0,cssW,cssH);
+
+    const padL = 30, padR = 14, padT = 16, padB = 26;
+    const w = cssW - padL - padR, h = cssH - padT - padB;
+    const maxV = 10, minV = 0;
+
+    const styles = getComputedStyle(document.documentElement);
+    const gridColor = styles.getPropertyValue('--border-soft').trim();
+    const textColor = styles.getPropertyValue('--text-faint').trim();
+    const lineA = styles.getPropertyValue('--accent-a').trim();
+    const lineB = styles.getPropertyValue('--accent-b').trim();
+
+    ctx.font = '11px IBM Plex Mono, monospace';
+    ctx.fillStyle = textColor;
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+    [0,5,10].forEach(v => {
+      const y = padT + h - (v-minV)/(maxV-minV)*h;
+      ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL+w, y); ctx.stroke();
+      ctx.fillText(String(v), 4, y+4);
+    });
+
+    const pts = data.map((d,i) => ({
+      x: padL + (i/(data.length-1))*w,
+      y: padT + h - (d.overall-minV)/(maxV-minV)*h,
+      v: d.overall, date: d.date
+    }));
+
+    const grad = ctx.createLinearGradient(0,padT,0,padT+h);
+    grad.addColorStop(0, lineA+'55');
+    grad.addColorStop(1, lineA+'02');
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, padT+h);
+    pts.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.lineTo(pts[pts.length-1].x, padT+h);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    const lineGrad = ctx.createLinearGradient(padL,0,padL+w,0);
+    lineGrad.addColorStop(0, lineA); lineGrad.addColorStop(1, lineB);
+    ctx.beginPath();
+    pts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.strokeStyle = lineGrad;
+    ctx.lineWidth = 2.5;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    pts.forEach((p,i) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, i===pts.length-1 ? 4 : 2.5, 0, Math.PI*2);
+      ctx.fillStyle = i===pts.length-1 ? lineB : lineA;
+      ctx.fill();
+      if (i===0 || i===pts.length-1 || i===Math.floor(pts.length/2)){
+        ctx.fillStyle = textColor;
+        ctx.fillText(fmtDate(p.date), p.x-14, padT+h+18);
+      }
+    });
+
+    const last = pts[pts.length-1];
+    ctx.fillStyle = lineB;
+    ctx.font = '600 12px IBM Plex Mono, monospace';
+    ctx.fillText(last.v.toFixed(1), last.x-10, last.y-10);
+  }
+
+  /* ---------------- tabs ---------------- */
+  const TAB_NAMES = ['validate','scan','finder','viral','youtube','elite','photo','toolkit','roadmap'];
+  function showTab(tab){
+    TAB_NAMES.forEach(name => {
+      document.getElementById('tab-btn-' + name).classList.toggle('active', tab === name);
+      document.getElementById('tab-' + name).hidden = tab !== name;
+    });
+  }
+  window.showTab = showTab;
+
+  /* ---------------- deep scan ---------------- */
+  const COMPETITOR_POOL = [
+    {name:'MealShift', tagline:'Meal planning for shift-based schedules', pricing:'$8/mo', founded:2023},
+    {name:'NightPlate', tagline:'Grocery + recipe app for irregular hours', pricing:'$6/mo', founded:2022},
+    {name:'PrepPilot', tagline:'AI meal-prep planner, general audience', pricing:'$12/mo', founded:2021},
+    {name:'ShiftEats', tagline:'Delivery-focused, shift-worker targeted', pricing:'Free + ads', founded:2024},
+    {name:'RotaFuel', tagline:'Nutrition tracking synced to work rota', pricing:'$5/mo', founded:2023},
+    {name:'Chrononutri', tagline:'Circadian-rhythm nutrition coaching', pricing:'$15/mo', founded:2020},
+    {name:'BatchBox', tagline:'Batch-cooking recipe subscription', pricing:'$9/mo', founded:2022},
+    {name:'GraveyardGrub', tagline:'Community app for night-shift meal swaps', pricing:'Free', founded:2024},
+    {name:'FuelClock', tagline:'Meal timing app for rotating shifts', pricing:'$7/mo', founded:2023},
+    {name:'PlateShift', tagline:'Enterprise wellness add-on for shift workers', pricing:'B2B', founded:2021}
+  ];
+
+  const SCAN_STEPS = ['Scanning Reddit discussions', 'Scanning X mentions', 'Crawling general web results', 'Compiling competitor list'];
+
+  function runStagedProgress(containerId, steps, onDone){
+    const el = document.getElementById(containerId);
+    el.hidden = false;
+    el.innerHTML = steps.map((s,i) => `<div class="pstep" id="${containerId}-${i}"><span class="ring"></span>${s}</div>`).join('');
+    let i = 0;
+    function tick(){
+      if (i > 0) document.getElementById(`${containerId}-${i-1}`).className = 'pstep done';
+      if (i < steps.length){
+        document.getElementById(`${containerId}-${i}`).className = 'pstep active';
+        i++;
+        setTimeout(tick, 520);
+      } else {
+        onDone();
+      }
+    }
+    tick();
+  }
+
+  function runDeepScan(){
+    const idea = document.getElementById('scan-input').value.trim();
+    if (!idea) return;
+    document.getElementById('scan-btn').disabled = true;
+    document.getElementById('scan-empty').hidden = true;
+    document.getElementById('scan-results').innerHTML = '';
+    const fxBox = document.getElementById('scan-scanfx-box');
+    fxBox.hidden = false;
+    playScan('scan-scanfx', SCAN_STEPS.length*520 + 300, 'Scanning ' + idea, 'scan-scanfx-label');
+    runStagedProgress('scan-progress', SCAN_STEPS, () => {
+      fxBox.hidden = true;
+      const rand = xmur3(idea.toLowerCase());
+      const picks = pick(rand, COMPETITOR_POOL, 4);
+      document.getElementById('scan-results').innerHTML = picks.map(c => {
+        const threat = 1 + Math.floor(rand()*5);
+        const tColor = threat >= 4 ? 'var(--bad)' : threat === 3 ? 'var(--warn)' : 'var(--good)';
+        return `
+        <div class="result-card">
+          <div class="rc-top">
+            <div><h4>${c.name}</h4><div class="rc-meta">${c.tagline}</div></div>
+            <span class="badge" style="background:${tColor}26; color:${tColor};">Threat ${threat}/5</span>
+          </div>
+          <div class="threat-bar"><div class="threat-fill" style="width:${threat*20}%; background:${tColor};"></div></div>
+          <div class="kv-row"><span>Pricing</span><b>${c.pricing}</b></div>
+          <div class="kv-row"><span>Founded</span><b>${c.founded}</b></div>
+        </div>`;
+      }).join('');
+      document.getElementById('scan-btn').disabled = false;
+      document.getElementById('scan-progress').hidden = true;
+    });
+  }
+  window.runDeepScan = runDeepScan;
+
+  /* ---------------- product finder ---------------- */
+  const SUPPLIER_POOL = [
+    {name:'Guangzhou Silite Home Co.', region:'China', moq:500, price:'$1.20–$2.10', rating:4.6, lead:'18 days'},
+    {name:'Kolkata Craft Exports', region:'India', moq:300, price:'$0.90–$1.60', rating:4.3, lead:'22 days'},
+    {name:'Vietnam EcoWare Ltd.', region:'Vietnam', moq:1000, price:'$0.75–$1.30', rating:4.7, lead:'25 days'},
+    {name:'Istanbul Home Goods', region:'Turkey', moq:200, price:'$1.80–$2.60', rating:4.4, lead:'12 days'},
+    {name:'PolyGreen Manufacturing', region:'Malaysia', moq:750, price:'$1.05–$1.85', rating:4.2, lead:'20 days'},
+    {name:'Shenzhen Bright Silicone', region:'China', moq:1000, price:'$0.65–$1.10', rating:4.5, lead:'16 days'},
+    {name:'Nairobi Made Collective', region:'Kenya', moq:150, price:'$2.20–$3.10', rating:4.1, lead:'28 days'},
+    {name:'São Paulo Sustentável', region:'Brazil', moq:400, price:'$1.50–$2.30', rating:4.3, lead:'19 days'},
+    {name:'Ho Chi Minh PackTech', region:'Vietnam', moq:600, price:'$0.85–$1.45', rating:4.6, lead:'21 days'},
+    {name:'Mumbai Green Supply Co.', region:'India', moq:250, price:'$1.10–$1.90', rating:4.0, lead:'24 days'}
+  ];
+
+  const FINDER_STEPS = ['Scanning supplier directories', 'Checking trade reviews', 'Comparing pricing tiers', 'Ranking by fit'];
+
+  function runProductFinder(){
+    const cat = document.getElementById('finder-input').value.trim();
+    if (!cat) return;
+    document.getElementById('finder-btn').disabled = true;
+    document.getElementById('finder-empty').hidden = true;
+    document.getElementById('finder-results').innerHTML = '';
+    const fxBox = document.getElementById('finder-scanfx-box');
+    fxBox.hidden = false;
+    playScan('finder-scanfx', FINDER_STEPS.length*520 + 300, 'Sourcing ' + cat, 'finder-scanfx-label');
+    runStagedProgress('finder-progress', FINDER_STEPS, () => {
+      fxBox.hidden = true;
+      const rand = xmur3(cat.toLowerCase());
+      const picks = pick(rand, SUPPLIER_POOL, 4);
+      document.getElementById('finder-results').innerHTML = picks.map(s => `
+        <div class="result-card">
+          <div class="rc-top">
+            <div><h4>${s.name}</h4><div class="rc-meta">${s.region}</div></div>
+            <span class="badge" style="background:var(--accent-b-dim); color:var(--accent-b);">★ ${s.rating}</span>
+          </div>
+          <div class="kv-row"><span>MOQ</span><b>${s.moq} units</b></div>
+          <div class="kv-row"><span>Unit price</span><b>${s.price}</b></div>
+          <div class="kv-row"><span>Lead time</span><b>${s.lead}</b></div>
+        </div>`).join('');
+      document.getElementById('finder-btn').disabled = false;
+      document.getElementById('finder-progress').hidden = true;
+    });
+  }
+  window.runProductFinder = runProductFinder;
+
+  /* ---------------- viral finder ---------------- */
+  const VIRAL_POOL = [
+    {name:'Magnetic cable organizer clips', category:'Tech accessory', platforms:['TikTok','Amazon'], price:'$7–$14', growth:'+310% mentions / 30d'},
+    {name:'LED color-changing shower head', category:'Home', platforms:['TikTok','Instagram'], price:'$18–$29', growth:'+540% mentions / 30d'},
+    {name:'Posture-correcting phone stand', category:'Desk accessory', platforms:['TikTok'], price:'$12–$22', growth:'+185% mentions / 30d'},
+    {name:'Silicone stretchy food huggers', category:'Kitchen', platforms:['TikTok','Amazon'], price:'$9–$16', growth:'+260% mentions / 30d'},
+    {name:'Mini handheld neck massager', category:'Wellness', platforms:['TikTok','Instagram'], price:'$20–$35', growth:'+420% mentions / 30d'},
+    {name:'Reusable dryer balls, wool', category:'Home', platforms:['Amazon','Instagram'], price:'$8–$15', growth:'+95% mentions / 30d'},
+    {name:'Collapsible travel bottle set', category:'Travel', platforms:['TikTok','Amazon'], price:'$14–$24', growth:'+150% mentions / 30d'},
+    {name:'Pet hair-removing bath gloves', category:'Pet', platforms:['TikTok','Instagram'], price:'$6–$13', growth:'+280% mentions / 30d'},
+    {name:'Under-cabinet motion sensor lights', category:'Home', platforms:['Amazon'], price:'$16–$27', growth:'+110% mentions / 30d'},
+    {name:'Jade facial roller + gua sha set', category:'Beauty', platforms:['TikTok','Instagram'], price:'$10–$19', growth:'+200% mentions / 30d'}
+  ];
+  const VIRAL_STEPS = ['Scanning TikTok Shop trends', 'Scanning Instagram mentions', 'Cross-checking Amazon movers', 'Ranking by growth'];
+  const LIFECYCLE_STAGES = [
+    {label:'Rising', color:'var(--good)'},
+    {label:'Peaking', color:'var(--warn)'},
+    {label:'Declining', color:'var(--bad)'}
+  ];
+  const MARKETPLACES = ['Amazon', 'Etsy', 'TikTok Shop', 'Shopify'];
+
+  function runViralFinder(){
+    const niche = document.getElementById('viral-input').value.trim();
+    document.getElementById('viral-btn').disabled = true;
+    document.getElementById('viral-empty').hidden = true;
+    document.getElementById('viral-results').innerHTML = '';
+    const fxBox = document.getElementById('viral-scanfx-box');
+    fxBox.hidden = false;
+    const label = niche ? 'Scanning ' + niche : 'Scanning trending products';
+    playScan('viral-scanfx', VIRAL_STEPS.length*520 + 300, label, 'viral-scanfx-label').then(() => {
+      fxBox.hidden = true;
+      const rand = xmur3((niche || 'trending-now').toLowerCase());
+      const picks = pick(rand, VIRAL_POOL, 4);
+      document.getElementById('viral-results').innerHTML = picks.map(v => {
+        const score = 55 + Math.floor(rand()*44);
+        const saturation = 15 + Math.floor(rand()*80);
+        const satColor = saturation >= 65 ? 'var(--bad)' : saturation >= 35 ? 'var(--warn)' : 'var(--good)';
+        const stage = LIFECYCLE_STAGES[Math.floor(rand()*LIFECYCLE_STAGES.length)];
+        const bestFit = MARKETPLACES[Math.floor(rand()*MARKETPLACES.length)];
+        const fitScore = 60 + Math.floor(rand()*38);
+        return `
+        <div class="result-card">
+          <div class="rc-top">
+            <div><h4>${v.name}</h4><div class="rc-meta">${v.category} &middot; ${v.price}</div></div>
+            <span class="badge" style="background:${stage.color}26; color:${stage.color};">${stage.label}</span>
+          </div>
+          <div class="platform-row">${v.platforms.map(p => `<span class="platform-chip">${p}</span>`).join('')}</div>
+          <div class="virality-row">
+            <div class="virality-track"><div class="virality-fill" style="width:${score}%;"></div></div>
+            <div class="virality-num">${score}</div>
+          </div>
+          <span class="growth-tag">${v.growth}</span>
+          <div class="kv-row"><span>Saturation</span><b style="color:${satColor};">${saturation >= 65 ? 'High' : saturation >= 35 ? 'Medium' : 'Low'}</b></div>
+          <div class="threat-bar"><div class="threat-fill" style="width:${saturation}%; background:${satColor};"></div></div>
+          <div class="kv-row" style="margin-top:10px;"><span>Best marketplace fit</span><b>${bestFit} &middot; ${fitScore}%</b></div>
+        </div>`;
+      }).join('');
+      document.getElementById('viral-btn').disabled = false;
+    });
+  }
+  window.runViralFinder = runViralFinder;
+
+  /* ---------------- youtube idea generator ---------------- */
+  const YT_TEMPLATES = [
+    {title:"I Tried {niche} For 30 Days — Here's What Happened", hook:"Open on the worst moment from day 12, then cut to the title card.", format:"Long-form"},
+    {title:"Ranking Every {niche} Option So You Don't Have To", hook:"Show the worst option on screen first, before revealing the full ranking.", format:"Long-form"},
+    {title:"The $10 vs $1,000 {niche} Challenge", hook:"Put both options side by side in the first 3 seconds, no intro.", format:"Long-form"},
+    {title:"{niche} Myths That Are Costing You Money", hook:"State the most surprising myth as the very first line, before your name or channel.", format:"Short"},
+    {title:"I Let AI Plan My {niche} For A Week", hook:"Show the AI's first, obviously bad suggestion immediately for a laugh.", format:"Long-form"},
+    {title:"Nobody Talks About This {niche} Secret", hook:"Deliver the secret in a whisper, straight to camera, in the first shot.", format:"Short"},
+    {title:"I Asked 100 Strangers About {niche}", hook:"Cut straight to the funniest or most surprising answer before any intro.", format:"Long-form"},
+    {title:"{niche}: Beginner vs Expert (Blind Test)", hook:"Blur the expert's face on screen and tease 'guess who wins' as text.", format:"Long-form"},
+    {title:"The {niche} Setup That Changed Everything", hook:"Flash the messy 'before' setup for one second, then hard-cut to the reveal.", format:"Short"},
+    {title:"I Spent My Entire Paycheck On {niche}", hook:"Show the shocking receipt total as on-screen text before you speak.", format:"Long-form"},
+    {title:"{niche} Tier List (You Won't Agree With #1)", hook:"Place the most controversial pick in S-tier before giving any reason why.", format:"Short"},
+    {title:"What $0 {niche} Actually Looks Like", hook:"Open already mid-action doing the free version — skip the intro entirely.", format:"Short"}
+  ];
+
+  function fillTemplate(t, niche){ return t.replace(/\{niche\}/g, niche); }
+
+  function runYoutubeIdeas(){
+    const niche = document.getElementById('yt-input').value.trim();
+    if (!niche) return;
+    document.getElementById('yt-btn').disabled = true;
+    document.getElementById('yt-empty').hidden = true;
+    document.getElementById('yt-results').innerHTML = '';
+    const fxBox = document.getElementById('yt-scanfx-box');
+    fxBox.hidden = false;
+    playScan('yt-scanfx', 2000, 'Scanning trending formats for ' + niche, 'yt-scanfx-label').then(() => {
+      fxBox.hidden = true;
+      const rand = xmur3(niche.toLowerCase());
+      const picks = pick(rand, YT_TEMPLATES, 4);
+      document.getElementById('yt-results').innerHTML = picks.map(tpl => {
+        const score = 52 + Math.floor(rand()*46);
+        const views = score >= 85 ? '500K–2M views' : score >= 70 ? '100K–500K views' : score >= 55 ? '30K–100K views' : '5K–30K views';
+        return `
+        <div class="result-card">
+          <div class="rc-top">
+            <h4>${fillTemplate(tpl.title, niche)}</h4>
+            <span class="platform-chip">${tpl.format}</span>
+          </div>
+          <p style="font-size:.8rem; margin:8px 0;"><b style="color:var(--text);">Hook:</b> ${tpl.hook}</p>
+          <div class="virality-row">
+            <div class="virality-track"><div class="virality-fill" style="width:${score}%;"></div></div>
+            <div class="virality-num">${score}</div>
+          </div>
+          <div class="kv-row"><span>Projected views</span><b>${views}</b></div>
+        </div>`;
+      }).join('');
+      document.getElementById('yt-btn').disabled = false;
+    });
+  }
+  window.runYoutubeIdeas = runYoutubeIdeas;
+
+  /* ---------------- 10/10 finder ---------------- */
+  const ELITE_IDEAS = [
+    {idea:'Reusable produce mesh bags with a built-in tare-weight tag', pillars:{demand:9.4,innovation:9.0,execution:9.6,monetization:9.1},
+      pros:['Solves a checkout friction point every grocery shopper has','Near-zero returns — nothing to break or misuse','Bundles cleanly with an existing eco-kitchen product line'],
+      risks:['Margin depends on securing a low-cost mesh supplier at scale'], sources:{reddit:34,x:21,web:11}},
+    {idea:'Magnetic spice tins with a QR code that links to the exact recipe', pillars:{demand:9.1,innovation:9.5,execution:9.2,monetization:9.3},
+      pros:['Gifting angle drives higher average order value','Gets picked up by home-organization influencers naturally','Refill subscription attaches easily once the tins are sold'],
+      risks:['Requires a lightweight app or landing page per QR code'], sources:{reddit:28,x:33,web:9}},
+    {idea:'Car headrest tablet mount with a built-in white-noise speaker', pillars:{demand:9.0,innovation:9.2,execution:9.0,monetization:9.4},
+      pros:['Targets a specific, high-intent buyer: parents on road trips','Premium price point supportable at $30–45','Easy to demo in a 15-second video'],
+      risks:['Two functions in one product raises unit cost and QC risk'], sources:{reddit:19,x:26,web:14}},
+    {idea:'Pet feeding mat that portions treats into a slow-scatter pattern', pillars:{demand:9.3,innovation:9.1,execution:9.5,monetization:9.0},
+      pros:['Vet-recommended category already has proven demand','Simple silicone mold — very shippable at scale','Strong repeat-purchase angle: sizes per pet breed'],
+      risks:['Category has a few entrenched brands on Amazon already'], sources:{reddit:41,x:17,web:12}},
+    {idea:'Under-desk foot hammock with a phone charging dock built in', pillars:{demand:9.2,innovation:9.6,execution:9.1,monetization:9.2},
+      pros:['Remote-work niche is still actively buying desk upgrades','Combines two trending product categories into one SKU','Very shareable — visually unusual enough to go viral'],
+      risks:['Installation clarity matters — needs a clean unboxing video'], sources:{reddit:23,x:38,web:8}}
+  ];
+  let lastEliteIndex = -1;
+
+  function findEliteIdea(){
+    document.getElementById('elite-btn').disabled = true;
+    document.getElementById('elite-empty').hidden = true;
+    const fxBox = document.getElementById('elite-scanfx-box');
+    fxBox.hidden = false;
+    const DUR = 1300;
+    playScan('elite-scanfx', DUR, 'Scanning for elite ideas', 'elite-scanfx-label');
+    setTimeout(() => {
+      fxBox.hidden = true;
+      let idx = Math.floor(Math.random() * ELITE_IDEAS.length);
+      if (ELITE_IDEAS.length > 1 && idx === lastEliteIndex) idx = (idx + 1) % ELITE_IDEAS.length;
+      lastEliteIndex = idx;
+      const e = ELITE_IDEAS[idx];
+      const overall = Math.round(((e.pillars.demand + e.pillars.innovation + e.pillars.execution + e.pillars.monetization) / 4) * 10) / 10;
+      const trandRand = xmur3(e.idea);
+      const trademarkRisk = ['Low', 'Low', 'Medium'][Math.floor(trandRand()*3)];
+      const trColor = trademarkRisk === 'Medium' ? 'var(--warn)' : 'var(--good)';
+      const resultEl = document.getElementById('elite-result');
+      resultEl.hidden = false;
+      resultEl.innerHTML = `
+        <div class="elite-panel">
+          <div class="platform-row" style="margin-bottom:14px;">
+            <span class="elite-badge" style="margin-bottom:0;">★ 10/10 caliber</span>
+            <span class="badge" style="background:${trColor}26; color:${trColor};">Trademark risk: ${trademarkRisk}</span>
+          </div>
+          <div class="verdict-top" style="margin-bottom:14px;">
+            <div><div class="label">Elite idea</div><div class="verdict-idea">${e.idea}</div></div>
+            <div class="verdict-score"><div class="big num">${overall.toFixed(1)}</div></div>
+          </div>
+          <div class="pillar-row">${PILLARS.map(p => `
+            <div class="pillar-line">
+              <div class="pname">${p.icon}${p.name}</div>
+              <div class="pillar-track"><div class="pillar-fill" style="width:${e.pillars[p.key]*10}%"></div></div>
+              <div class="pval">${e.pillars[p.key].toFixed(1)}</div>
+            </div>`).join('')}</div>
+          <div class="pr-grid">
+            <div class="pr-col pros"><h4>Pros</h4><ul>${e.pros.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+            <div class="pr-col risks"><h4>Risks</h4><ul>${e.risks.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+          </div>
+          <div class="source-row">
+            <div class="source-chip">Reddit &nbsp;<b>${e.sources.reddit} mentions</b></div>
+            <div class="source-chip">X &nbsp;<b>${e.sources.x} mentions</b></div>
+            <div class="source-chip">Web &nbsp;<b>${e.sources.web} articles</b></div>
+          </div>
+        </div>`;
+      document.getElementById('elite-btn').disabled = false;
+    }, DUR + 100);
+  }
+  window.findEliteIdea = findEliteIdea;
+
+  /* ---------------- photo scan ---------------- */
+  const PHOTO_CATEGORIES = ['Kitchen gadget','Beauty tool','Fitness accessory','Pet product','Tech accessory','Home decor','Travel accessory','Baby product'];
+  const DEMAND_TAGS_POOL = ['High TikTok Shop demand right now','Seasonal spike likely in Q4','Already saturated on Amazon','Low competition on Etsy','Strong gifting potential','Repeat-purchase / consumable angle'];
+  const PHOTO_PROS_POOL = ["Strong 'wow factor' for a short demo video","Lightweight and cheap to ship","High perceived value versus likely unit cost","Solves a small, visible, relatable annoyance","Easy to bundle with a complementary accessory"];
+  const PHOTO_RISKS_POOL = ["Similar items already flooding paid social ads","Looks fragile — return rate could run high","Demand may be tied to a fading trend cycle","Easy for competitors to copy once it's proven","Import or customs complexity for this material"];
+
+  function ratePhoto(file){
+    const rand = xmur3(`${file.name}-${file.size}-${file.lastModified}-${file.type}`);
+    const overall = Math.round((5 + rand()*4.7) * 10) / 10;
+    const category = PHOTO_CATEGORIES[Math.floor(rand()*PHOTO_CATEGORIES.length)];
+    const tags = pick(rand, DEMAND_TAGS_POOL, 2);
+    const pros = pick(rand, PHOTO_PROS_POOL, 2);
+    const risks = pick(rand, PHOTO_RISKS_POOL, 2);
+    return {overall, category, tags, pros, risks, verdict: verdictFor(overall)};
+  }
+
+  function handlePhotoScan(evt){
+    const file = evt.target.files && evt.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = document.getElementById('photo-preview');
+      img.src = reader.result;
+      img.hidden = false;
+      document.getElementById('photo-drop').classList.add('has-image');
+      document.getElementById('photo-empty').hidden = true;
+      document.getElementById('photo-result').innerHTML = '';
+      playScan('photo-scanfx', 1300, 'Analyzing product', 'photo-scanfx-label').then(() => {
+        const r = ratePhoto(file);
+        const tv = toneVars(r.verdict.tone);
+        document.getElementById('photo-result').innerHTML = `
+          <div class="score-line">
+            <div class="score-big num">${r.overall.toFixed(1)}</div>
+            <div class="verdict-pill" style="background:${tv.bg}; color:${tv.fg};"><span class="dot"></span>${r.verdict.text}</div>
+          </div>
+          <div class="photo-cat">${r.category}</div>
+          <div class="platform-row" style="margin-bottom:14px;">${r.tags.map(t => `<span class="platform-chip">${t}</span>`).join('')}</div>
+          <div class="pr-grid">
+            <div class="pr-col pros"><h4>Pros</h4><ul>${r.pros.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+            <div class="pr-col risks"><h4>Risks</h4><ul>${r.risks.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+          </div>`;
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+  window.handlePhotoScan = handlePhotoScan;
+
+  /* ---------------- toolkit: profit margin calculator ---------------- */
+  function updateCalc(){
+    const cost = parseFloat(document.getElementById('calc-cost').value) || 0;
+    const ship = parseFloat(document.getElementById('calc-ship').value) || 0;
+    const price = parseFloat(document.getElementById('calc-price').value) || 0;
+    const adPct = parseFloat(document.getElementById('calc-ads').value) || 0;
+    const landedCost = cost + ship;
+    const gross = price - landedCost;
+    const grossPct = price > 0 ? (gross / price * 100) : 0;
+    const adSpendAmt = price * (adPct / 100);
+    const net = gross - adSpendAmt;
+    document.getElementById('calc-gross').textContent = `$${gross.toFixed(2)} (${grossPct.toFixed(0)}%)`;
+    const netEl = document.getElementById('calc-net');
+    netEl.textContent = `$${net.toFixed(2)} / unit`;
+    netEl.style.color = net >= 0 ? 'var(--good)' : 'var(--bad)';
+    document.getElementById('calc-breakeven').textContent = `${Math.max(0, grossPct).toFixed(0)}% of price`;
+  }
+  window.updateCalc = updateCalc;
+
+  /* ---------------- toolkit: idea comparison ---------------- */
+  function renderCompareBody(r){
+    const tv = toneVars(r.verdict.tone);
+    return `
+      <div class="compare-score num" style="color:${tv.fg};">${r.overall.toFixed(1)}</div>
+      <div class="pillar-row">${PILLARS.map(p => `
+        <div class="pillar-line">
+          <div class="pname">${p.icon}${p.name}</div>
+          <div class="pillar-track"><div class="pillar-fill" style="width:${r.pillars[p.key]*10}%"></div></div>
+          <div class="pval">${r.pillars[p.key].toFixed(1)}</div>
+        </div>`).join('')}</div>`;
+  }
+  function populateComparePickers(){
+    const options = historyData.map((r,i) => `<option value="${i}">${r.idea}</option>`).join('');
+    const a = document.getElementById('compare-a'), b = document.getElementById('compare-b');
+    a.innerHTML = options; b.innerHTML = options;
+    a.selectedIndex = 0;
+    b.selectedIndex = Math.min(1, historyData.length - 1);
+    updateCompare();
+  }
+  function updateCompare(){
+    const a = historyData[document.getElementById('compare-a').value];
+    const b = historyData[document.getElementById('compare-b').value];
+    if (a) document.getElementById('compare-a-body').innerHTML = renderCompareBody(a);
+    if (b) document.getElementById('compare-b-body').innerHTML = renderCompareBody(b);
+  }
+  window.updateCompare = updateCompare;
+
+  /* ---------------- toolkit: launch checklist generator ---------------- */
+  const CHECKLIST_TEMPLATE = [
+    'Order one supplier sample of "{idea}" to check quality in hand',
+    'Write three short-form video hooks testing different angles',
+    'Build the product listing with 5+ lifestyle photos and a comparison chart',
+    'Launch with a $20/day ad budget split across two audiences',
+    'Collect the first 10 reviews via a post-purchase follow-up email',
+    'Re-check margin and reorder quantity after the first 50 units sell'
+  ];
+  function generateChecklist(){
+    const idea = document.getElementById('checklist-input').value.trim() || 'this product';
+    document.getElementById('checklist-output').innerHTML = CHECKLIST_TEMPLATE.map((t,i) =>
+      `<li><span class="cl-num">${i+1}</span>${t.replace('{idea}', idea)}</li>`).join('');
+  }
+  window.generateChecklist = generateChecklist;
+
+  /* ---------------- roadmap ---------------- */
+  const ROADMAP_ITEMS = [
+    {name:'Competitor Ad Spy', desc:'See live ads competitors are running for a similar product.'},
+    {name:'Ad Angle Generator', desc:'Hook and angle ideas for TikTok/Facebook ads, based on the product\'s pros and pain points.'},
+    {name:'Influencer Match Finder', desc:'Suggests micro-influencers whose audience fits the niche.'},
+    {name:'Store Builder Handoff', desc:'One click exports a validated idea into a draft Shopify/WooCommerce listing.'},
+    {name:'Weekly Hot Sheet Email', desc:'A personalized digest of trending and 10/10 products, sent every week.'},
+    {name:'Team Watchlists', desc:'Share ideas with teammates so they can comment and vote before you commit.'},
+    {name:'Browser Extension', desc:'A "Validate this" button that appears on any Amazon, AliExpress or TikTok Shop listing.'},
+    {name:'Review Sentiment Scraper', desc:'Pulls reviews on similar products and surfaces common complaints as opportunity gaps.'},
+    {name:'Barcode / UPC Lookup', desc:'Scan a barcode to instantly pull existing listings, prices and reviews for that exact product.'},
+    {name:'Shipping & Landed-Cost Estimator', desc:'Estimates true delivered cost from weight, dimensions and country of origin.'},
+    {name:'Hashtag Growth Tracker', desc:'Tracks view counts and growth rate of TikTok/Instagram tags tied to a niche.'}
+  ];
+  function populateRoadmap(){
+    document.getElementById('roadmap-grid').innerHTML = ROADMAP_ITEMS.map(r => `
+      <div class="result-card roadmap">
+        <div class="rc-top">
+          <h4>${r.name}</h4>
+          <span class="badge roadmap-status">Coming soon</span>
+        </div>
+        <p style="font-size:.8rem;">${r.desc}</p>
+      </div>`).join('');
+  }
+
+  /* ---------------- pdf export ---------------- */
+  function exportPdf(ideaText){
+    const r = historyData.find(h => h.idea === ideaText) || runValidation(ideaText);
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFont('helvetica','bold'); doc.setFontSize(18);
+    doc.text('Validata Report', 20, 22);
+    doc.setFontSize(11); doc.setFont('helvetica','normal');
+    doc.text(r.idea, 20, 32, {maxWidth:170});
+    doc.setFontSize(26); doc.setFont('helvetica','bold');
+    doc.text(r.overall.toFixed(1) + ' / 10', 20, 50);
+    doc.setFontSize(11); doc.setFont('helvetica','normal');
+    doc.text(r.verdict.text, 20, 58);
+
+    let y = 72;
+    doc.setFont('helvetica','bold'); doc.text('Pillar scores', 20, y); y += 8;
+    doc.setFont('helvetica','normal');
+    PILLARS.forEach(p => { doc.text(`${p.name}: ${r.pillars[p.key].toFixed(1)}`, 24, y); y += 7; });
+
+    y += 4; doc.setFont('helvetica','bold'); doc.text('Pros', 20, y); y += 8;
+    doc.setFont('helvetica','normal');
+    r.pros.forEach(t => { doc.text('- ' + t, 24, y, {maxWidth:165}); y += 7; });
+
+    y += 4; doc.setFont('helvetica','bold'); doc.text('Risks', 20, y); y += 8;
+    doc.setFont('helvetica','normal');
+    r.risks.forEach(t => { doc.text('- ' + t, 24, y, {maxWidth:165}); y += 7; });
+
+    y += 10; doc.setFontSize(9); doc.setTextColor(120);
+    doc.text('Generated by Validata (demo build) — sample data, not investment advice.', 20, y);
+
+    doc.save('validata-report.pdf');
+  }
+  window.exportPdf = exportPdf;
+
+  /* ---------------- init ---------------- */
+  renderVerdict(runValidation(document.getElementById('idea-input').value));
+  renderLenses();
+})();
+</script>
